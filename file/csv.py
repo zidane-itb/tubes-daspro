@@ -2,9 +2,6 @@ import os
 
 
 def write(headers, datas, folder_name, file_name):
-    # headers = ['Name', 'M1 Score', 'M2 Score']
-    # datas = [['Alex', 62, 80], ['Brad', 45, 56], ['Joey', 85, 98]]
-
     delimiter = ';'
 
     folder_found = False
@@ -19,14 +16,18 @@ def write(headers, datas, folder_name, file_name):
         os.mkdir(path=folder_name)
         url = folder_name
 
-    with open(os.path.join(url, file_name), 'w') as file:
-        for header in headers:
-            file.write(header + delimiter)
-        file.write('\n')
-        for data in datas:
-            for text in data:
-                file.write(str(text) + delimiter)
+    try:
+        with open(os.path.join(url, file_name), 'w') as file:
+            for header in headers:
+                file.write(header + delimiter)
             file.write('\n')
+            for data in datas:
+                for text in data:
+                    file.write(str(text) + delimiter)
+                file.write('\n')
+        return True
+    except:
+        return False
 
 
 def read(folder_name, file_name):
@@ -41,7 +42,7 @@ def read(folder_name, file_name):
             folder_found = True
 
     if not folder_found:
-        pass
+        raise FileNotFoundError
 
     with open(os.path.join(url, file_name)) as file:
         raw_full = file.read().splitlines()
@@ -64,4 +65,3 @@ def splitter(string, delimiter):
         else:
             cur += el
     return arr
-
