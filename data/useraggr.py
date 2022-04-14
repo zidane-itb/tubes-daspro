@@ -1,6 +1,7 @@
 from file.csv import read, write
-from default import liststc
+from default.liststc import len, append
 from security.cipher import cipher_string
+from security.validator import validate_register
 
 __csv_header = ['id', 'username', 'nama', 'password', 'role', 'saldo']
 __file_name = 'user.csv'
@@ -11,27 +12,49 @@ __role = ['admin', 'user']
 
 
 def login(user_list, username, password):
+
+    # loop through user_list untuk mencari user dengan username dan password sesuai parameter fungsi
+
+    # gk boleh
     for i, user in enumerate(user_list):
-        if user[1] == username and user[3] == password:
+
+        # user found, return index user di array user
+        if user[1] == username and user[3] == cipher_string(password):
             return i
+
+    # user not found, return -1
     return -1
 
 
 def register(user_list, username, nama, password):
-    for user in user_list:
-        if username == user[1]:
-            return []
+    if validate_register(username):
 
-    # length of array untuk menentukan id akun baru
-    arr_length = liststc.len(user_list)
+        # check apakah ada user yang sudah terdaftar dengan username yang sama dengan parameter fungsi
 
-    # password with caesar cipher algorithm
-    password = cipher_string(password)
+        # gk boleh
+        for user in user_list:
 
-    # add account to array
-    arr = [arr_length, username, nama, password, 1, 0]
+            # user found, return array kosong
 
-    return user_list + arr
+            if username == user[1]:
+                return []
+
+        # length of array untuk menentukan id akun baru
+        arr_length = len(user_list)
+
+        # password with caesar cipher algorithm
+        password = cipher_string(password)
+
+        # add account to array
+        arr = [arr_length, username, nama, password, 1, 0]
+
+        # save to csv
+
+        return append(user_list, arr)
+
+    else:
+
+        return []
 
 
 def load_user(folder_name):

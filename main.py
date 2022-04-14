@@ -1,5 +1,6 @@
-from data.useraggr import load_user, login, register
-from data.gameaggr import load_game, search_game_by_id_tahun
+from data.useraggr import load_user
+from data.gameaggr import load_game
+from front.interaction import register_front, tambah_game_front, login_front, search_my_game_front
 import argparse
 
 
@@ -22,7 +23,11 @@ def get_args():
 if __name__ == '__main__':
     folder_name = get_args()
 
+    print('loading...')
+
     loader = load(folder_name)
+
+    print('Selamat datang!')
 
     user_arr = loader[0]
     game_arr = loader[1]
@@ -35,52 +40,49 @@ if __name__ == '__main__':
 
         if menu.strip() == 'login':
 
-            username = input('username: ')
-            password = input('password: ')
-
-            index = login(user_arr, username, password)
-
-            if index == -1:
-                print('username atau password salah')
-            else:
-                logged_in_arr = user_arr[index]
-
-        elif menu.strip() == 'register':
             if not logged_in_arr:
-                print('Login terlebih dahulu')
+
+                logged_in_arr = login_front(user_arr)
+
             else:
-                if logged_in_arr[4] == '0':
-                    nama = input('Masukkan nama: ')
-                    username = input('Masukkan username: ')
-                    password = input('Masukkan password: ')
 
-                    arr = register(user_arr, username, nama, password)
+                print('sudah login')
 
-                    if not arr:
-                        print('Username', username, 'sudah terpakai, silakan menggunakan username lain')
+        else:
+
+            if not logged_in_arr:
+
+                print('login terlebih dahulu')
+
+            else:
+                if menu.strip() == 'register':
+
+                    if logged_in_arr[4] == '0':
+
+                        user_arr = register_front(user_arr)
+
                     else:
-                        print('Username', username, 'telah berhasil register ke dalam "Binomo"')
-                        user_arr = arr
-                else:
-                    print('tidak terdaftar sebagai admin')
 
-        elif menu.strip() == 'search_my_game':
-            if not logged_in_arr:
-                print('Login terlebih dahulu')
-            else:
-                game_id = input('Masukkan ID Game: ')
-                tahun_rilis = input('Masukkan tahun rilis game: ')
+                        print('tidak terdaftar sebagai admin')
 
-                game_id = None if game_id.strip() == '' else game_id
-                tahun_rilis = None if tahun_rilis.strip() == '' else tahun_rilis
+                elif menu.strip() == 'tambah_game':
 
-                try:
-                    tahun_rilis = int(tahun_rilis)
+                    if logged_in_arr[4] == '0':
 
-                    arr = search_game_by_id_tahun(game_arr, game_id, tahun_rilis)
+                        game_arr = tambah_game_front()
 
-                    print(arr)
+                    else:
 
-                except ValueError:
-                    print('Tahun rilis tidak valid')
+                        print('tidak terdaftar sebagai admin')
 
+                elif menu.strip() == 'search_my_game':
+
+                    # harusnya disini berisi array dengan game milik user (perlu koreksi)
+                    search_arr = search_my_game_front(game_arr)
+
+                    if not search_arr:
+                        print('Game tidak ditemukan')
+
+                    else:
+                        # display array
+                        pass

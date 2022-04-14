@@ -5,6 +5,8 @@ __csv_header = ['game_id', 'nama', 'harga', 'user_id', 'tahun_beli']
 __nama_file = 'riwayat.csv'
 
 
+# fungsi ini sama persis dengan fungsi load di csv.py, tetapi karena terdapat perbedaan kebutuhan, maka fungsi ini
+# harus ditulis ulang
 def load_riwayat(folder_name, user_id):
     delimiter = ';'
 
@@ -31,13 +33,3 @@ def load_riwayat(folder_name, user_id):
                 data_arr += row[0]
 
     return data_arr
-
-
-def search_id_in_arr(id, arr):
-    i = 0
-    for obj in arr:
-        if obj[0] == id:
-            return True, i
-
-        i += 1
-    return False, 0
