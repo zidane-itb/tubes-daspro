@@ -1,4 +1,4 @@
-from default.liststc import len, append
+from default.liststc import length, add_list
 from file.csv import read, write
 
 __csv_header = ['id', 'nama', 'kategori', 'tahun_rilis', 'harga', 'stok']
@@ -12,7 +12,7 @@ def search_game_by_id(game_list, game_id, lh=None, rh=None):
     if lh is None:
         lh = 0
     if rh is None:
-        rh = len(game_list) - 1
+        rh = length(game_list) - 1
 
     if rh >= lh:
         middle = lh + (rh - lh) // 2
@@ -115,14 +115,14 @@ def add_game(game_list, nama_game, kategori, tahun_rilis, harga, stok_awal):
     if not (game_list is None and nama_game is None and kategori is None and
             tahun_rilis is None and harga is None and stok_awal is None):
 
-        id_num = convert_id(game_list[len(game_list) - 1][0]) + 1
-        str_phr = 'GAME000'[:(7 - len(str(id_num)))]
+        id_num = convert_id(game_list[length(game_list) - 1][0]) + 1
+        str_phr = 'GAME000'[:(7 - length(str(id_num)))]
 
         str_id_final = str_phr + str(id_num)
 
         arr = [str_id_final, nama_game, kategori, tahun_rilis, harga, stok_awal]
 
-        game_list = append(game_list, arr)
+        game_list = add_list(game_list, arr)
 
         # save to file
 
