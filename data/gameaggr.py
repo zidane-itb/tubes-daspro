@@ -78,7 +78,7 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
         tahun_fulfill = True
 
         # array game dengan game_id sesuai parameter fungsi
-        arr = game_list[search_game_by_id(game_id)]
+        arr = game_list[search_game_by_id(game_list, game_id)]
 
         # cek apakah semua field input user yang ada sesuai dengan data berdasarkan game_id
         if nama_game is not None and nama_game != arr[1]:

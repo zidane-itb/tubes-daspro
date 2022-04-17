@@ -7,7 +7,7 @@ __file_name = 'kepemilikan.csv'
 
 def load_kepemilikan(folder_name, game_list, user_id):
     return read(folder_name, __file_name, function_validator=verify_kepemilikan, function_search=search_game,
-                function_param=user_id, search_param=game_list)
+                validator_param=user_id, search_param=game_list)
 
 
 def verify_kepemilikan(array, user_id):

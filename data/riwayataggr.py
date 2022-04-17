@@ -5,7 +5,7 @@ __file_name = 'riwayat.csv'
 
 
 def load_riwayat(folder_name, user_id):
-    return read(folder_name, __file_name, function_validator=riwayat_validator, function_param=user_id)
+    return read(folder_name, __file_name, function_validator=riwayat_validator, validator_param=user_id)
 
 
 def riwayat_validator(array, user_id):

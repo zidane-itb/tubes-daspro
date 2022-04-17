@@ -50,7 +50,26 @@ def write(headers, datas, folder_name, file_name):
 
 
 def read(folder_name, file_name, function_validator=None, function_search=None,
-         function_param=None, search_param=None):
+         validator_param=None, search_param=None):
+
+    # penjelasan parameter fungsi
+    #
+    # folder_name: nama folder
+    #
+    # file_name: nama_file
+    #
+    # function_validator: jika tidak semua lines dari file ingin disimpan sebagai array, maka akan dilakukan validasi
+    #                     di tiap line data menggunakan fungsi ini
+    #
+    # function_search: jika ingin menggunakan data di tiap line file untuk melakukan proses search, maka fungsi
+    #                  function_search akan dijalankan. karena berada di fungsi load, artinya tidak akan ada field
+    #                  yang merupakan input user selain folder_name, maka diasumsikan fungsi ini akan selalu memberikan
+    #                  array yang memiliki isi
+    #
+    # validator_param: parameter yang akan digunakan sebagai validator di function_validator
+    #
+    # search_param: parameter yang akan digunakan function_search
+
     folder_found = False
     url = ''
 
@@ -69,24 +88,27 @@ def read(folder_name, file_name, function_validator=None, function_search=None,
         data_arr = []
 
         for i in range(length(raw)):
-            if function_validator is None:
 
-                if i == 0:
-                    pass
-
-                else:
-                    data_arr = add_list(data_arr, splitter_to_array(raw[i], delimiter))
+            # karena line 0 dari data merupakan header, maka kita bisa melewati i = 0
+            if i == 0:
+                pass
 
             else:
+                if function_validator is None:
 
-                if i == 0:
-                    pass
-
-                else:
                     data = splitter_to_array(raw[i], delimiter)
 
-                    if function_validator(data, function_param):
+                    if function_search is None:
+                        data_arr = add_list(data_arr, data)
+                    else:
+                        search = function_search(search_param, data)
+                        data_arr = add_list(data_arr, search)
 
+                else:
+
+                    data = splitter_to_array(raw[i], delimiter)
+
+                    if function_validator(data, validator_param):
                         if function_search is None:
                             data_arr = add_list(data_arr, data)
 

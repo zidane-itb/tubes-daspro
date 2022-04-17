@@ -3,12 +3,17 @@ import argparse
 from data.gameaggr import load_game
 from data.kepemilikanaggr import load_kepemilikan
 from data.useraggr import load_user
-from front.interaction import register_front, tambah_game_front, login_front, search_my_game_front
+from front.interaction import register_front, tambah_game_front, login_front, search_my_game_front, \
+    search_game_at_store_front
 
 
 def load(nama_folder, user_id):
-    arr_game = load_game(nama_folder)
-    arr_kepemilikan = load_kepemilikan(nama_folder, arr_game, user_id)
+    try:
+        arr_game = load_game(nama_folder)
+        arr_kepemilikan = load_kepemilikan(nama_folder, arr_game, user_id)
+
+    except FileNotFoundError:
+        print('')
     return arr_game, arr_kepemilikan
 
 
@@ -22,7 +27,7 @@ def get_args():
     return args.param
 
 
-def login():
+def login(user_arr):
     arr = []
     while True:
         if not arr:
@@ -38,14 +43,13 @@ if __name__ == '__main__':
 
     print('loading...')
 
-    loader = load(folder_name)
+    user_arr = load_user(folder_name)
 
     print('Selamat datang! Silahkan login terlebih dahulu')
 
-    user_arr = load_user(folder_name)
+    logged_in_arr = login(user_arr)
 
-    logged_in_arr = login()
-
+    loader = load(folder_name, logged_in_arr[0])
     game_arr = loader[0]
     kepemilikan_arr = loader[1]
 
@@ -80,5 +84,14 @@ if __name__ == '__main__':
                 print('Game tidak ditemukan')
 
             else:
-                # display array
-                pass
+                print(search_arr)
+
+        elif menu.strip() == 'search_game_at_store':
+
+            search_arr = search_game_at_store_front(game_arr)
+
+            if not search_arr:
+                print('Game tidak ditemukan')
+
+            else:
+                print(search_arr)

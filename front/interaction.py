@@ -1,6 +1,6 @@
 from security.validator import validate_register
 from data.useraggr import register, login
-from data.gameaggr import search_game_by_id_tahun
+from data.gameaggr import search_game_by_id_tahun, search_full
 
 
 def register_front(user_arr):
@@ -100,3 +100,21 @@ def search_my_game_front(game_arr):
         print('Tahun rilis tidak valid')
 
         return []
+
+
+def search_game_at_store_front(game_list):
+    game_id = input('Masukkan ID game: ')
+    nama_game = input('Masukkan nama game: ')
+    harga_game = input('Masukkan harga game: ')
+    kategori_game = input('Masukkan kategori game: ')
+    tahun_rilis = input('Masukkan tahun rilis game: ')
+
+    game_id = None if game_id.strip() == '' else game_id
+    nama_game = None if nama_game.strip() == '' else nama_game
+    harga_game = None if harga_game.strip() == '' else harga_game
+    kategori_game = None if kategori_game.strip() == '' else kategori_game
+    tahun_rilis = None if tahun_rilis.strip() == '' else tahun_rilis
+
+    arr = search_full(game_list, game_id, nama_game, harga_game, kategori_game, tahun_rilis)
+
+    return arr

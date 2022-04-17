@@ -7,6 +7,13 @@ __csv_header = ['id', 'username', 'nama', 'password', 'role', 'saldo']
 __file_name = 'user.csv'
 __role = ['admin', 'user']
 
+# for i in length(arr):
+#   arr[i][5]
+#
+#
+#
+
+
 
 # role: 1 = user, 0 = admin
 
