@@ -1,6 +1,6 @@
 from security.validator import validate_register
 from data.useraggr import register, login
-from data.gameaggr import search_game_by_id_tahun, search_full
+from data.gameaggr import search_game_by_id_tahun, search_full, ubah_stok, list_game_toko
 
 
 def register_front(user_arr):
@@ -118,3 +118,32 @@ def search_game_at_store_front(game_list):
     arr = search_full(game_list, game_id, nama_game, harga_game, kategori_game, tahun_rilis)
 
     return arr
+
+def ubah_stok_front(game_list):
+    ID = input("Masukkan ID game: ")
+    amount = int(input("Masukkan jumlah: "))
+    search_arr = ubah_stok(game_list, ID, amount)
+    arr = None
+    if search_arr == []:
+        arr = game_list
+        print("Tidak ada game dengan ID tersebut!")
+    elif search_arr[2] == 0:
+        arr = search_arr[0]
+        print("Stok game "+ ID +" gagal dikurangi karena stok kurang. Stok sekarang: "+search_arr[1])
+    elif search_arr[2] == -1:
+        arr = search_arr[0]
+        print("Stok game "+ ID +" berhasil dikurangi. Stok sekarang: "+search_arr[1])
+    elif search_arr[2] == 1:
+        arr = search_arr[0]
+        print("Stok game "+ ID +" berhasil ditambahkan. Stok sekarang: "+search_arr[1])
+    return arr
+
+def list_game_toko_front(game_list):
+    sort_scheme = input("Skema sorting: ")
+    arr = list_game_toko(game_list, sort_scheme)
+    if arr == []:
+        print("Skema sorting tidak valid!")
+        return arr
+    else:
+        return arr
+

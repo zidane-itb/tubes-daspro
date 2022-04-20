@@ -1,10 +1,11 @@
 import argparse
+from cgi import print_arguments
 
 from data.gameaggr import load_game
 from data.kepemilikanaggr import load_kepemilikan
 from data.useraggr import load_user
 from front.interaction import register_front, tambah_game_front, login_front, search_my_game_front, \
-    search_game_at_store_front
+    search_game_at_store_front, ubah_stok_front, list_game_toko_front
 
 
 def load(nama_folder, user_id):
@@ -93,5 +94,19 @@ if __name__ == '__main__':
             if not search_arr:
                 print('Game tidak ditemukan')
 
+            else:
+                print(search_arr)
+        
+        elif menu.strip() == 'ubah_stok':
+            search_arr = ubah_stok_front(game_arr)
+        
+        elif menu.strip() == 'list_game_toko':
+            search_arr = list_game_toko_front(game_arr)
+            print(search_arr)
+
+        elif menu.strip() == 'list_game':
+            search_arr = kepemilikan_arr
+            if search_arr == []:
+                print("Maaf, kamu belum membeli game. Ketik perintah beli_game untuk beli.")
             else:
                 print(search_arr)

@@ -1,21 +1,6 @@
-import argparse
-from argparse import ArgumentParser
+from data.gameaggr import ubah_stok
 
-
-class Parser(argparse.ArgumentParser):
-    def error(self, message: str):
-        print('sadasdasd')
-
-
-parser = argparse.ArgumentParser(usage='blablasdalsbd')
-
-parser.add_argument("param", nargs='*')
-parser.add_argument("parama", nargs='*')
-
-args = parser.parse_args()
-
-if args.param is None:
-    print('edi kontol')
-    parser.print_usage()
-else:
-    print(args)
+ID = input("Masukkan ID game: ")
+amount = int(input("Masukkan jumlah: "))
+ubah_stok('game.csv', ID, amount)
+print(ubah_stok)
