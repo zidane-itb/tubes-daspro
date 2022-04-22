@@ -7,25 +7,15 @@ __csv_header = ['id', 'username', 'nama', 'password', 'role', 'saldo']
 __file_name = 'user.csv'
 __role = ['admin', 'user']
 
-# for i in length(arr):
-#   arr[i][5]
-#
-#
-#
-
-
-
 # role: 1 = user, 0 = admin
 
 
 def login(user_list, username, password):
-
     # loop through user_list untuk mencari user dengan username dan password sesuai parameter fungsi
     for i in range(length(user_list)):
 
         # user found, return index user di array user
         if user_list[i][1] == username and user_list[i][3] == cipher_string(password):
-
             return i
 
     # user not found, return -1
@@ -40,7 +30,6 @@ def register(user_list, username, nama, password):
 
             # user found, return array kosong
             if username == user_list[i][1]:
-
                 return []
 
         # length of array untuk menentukan id akun baru

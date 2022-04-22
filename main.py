@@ -1,6 +1,6 @@
 import argparse
 
-from data.gameaggr import load_game
+from data.gameaggr import load_game, list_game_toko
 from data.kepemilikanaggr import load_kepemilikan
 from data.useraggr import load_user
 from front.interaction import register_front, tambah_game_front, login_front, search_my_game_front, \
@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
             if logged_in_arr[4] == '0':
 
-                game_arr = tambah_game_front()
+                pass
 
             else:
 
@@ -95,3 +95,11 @@ if __name__ == '__main__':
 
             else:
                 print(search_arr)
+
+        elif menu.strip() == 'save':
+
+            pass
+
+        elif menu.strip() == 'test':
+            pass
+

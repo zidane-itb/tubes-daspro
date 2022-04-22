@@ -42,3 +42,11 @@ def splitter_to_array(string, delimiter):
             cur += string[i]
 
     return arr
+
+
+def check_existing_el(el, arr):
+    for i in arr:
+        if i == el:
+            return True
+
+    return False

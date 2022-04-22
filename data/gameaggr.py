@@ -58,11 +58,11 @@ def search_game_by_id_tahun(game_list, game_id=None, tahun=None):
         arr = []
 
         # loop array game_list
-        for el in game_list:
+        for i in range(length(game_list)):
 
             # mencari elemen game_list dengan tahun yang sesuai dengan parameter
-            if int(el[3]) == tahun:
-                arr += [el]
+            if int(game_list[i][3]) == tahun:
+                arr += [game_list[i]]
 
         return arr
 
@@ -100,12 +100,13 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
         arr = []
 
         # loop array game_list untuk mencari game dengan parameter yang sesuai
-        for game in game_list:
-            if (nama_game is not None and nama_game == game[1]) or (harga is not None and harga == game[4]) or (
-                    kategori is not None and kategori == game[2]) or (
-                    tahun_rilis is not None and tahun_rilis == game[3]):
+        for i in range(length(game_list)):
+            if (nama_game is not None and nama_game == game_list[i][1]) or (
+                    harga is not None and harga == game_list[i][4]) or (
+                    kategori is not None and kategori == game_list[i][2]) or (
+                    tahun_rilis is not None and tahun_rilis == game_list[i][3]):
                 # game dengan fields sesuai parameter found
-                arr += [game]
+                arr += [game_list[i]]
 
         # return array
         return arr
@@ -116,21 +117,29 @@ def add_game(game_list, nama_game, kategori, tahun_rilis, harga, stok_awal):
             tahun_rilis is None and harga is None and stok_awal is None):
 
         id_num = convert_id(game_list[length(game_list) - 1][0]) + 1
-        str_phr = 'GAME000'[:(7 - length(str(id_num)))]
 
-        str_id_final = str_phr + str(id_num)
+        game_id = create_game_id(id_num)
 
-        arr = [str_id_final, nama_game, kategori, tahun_rilis, harga, stok_awal]
+        arr = [game_id, nama_game, kategori, tahun_rilis, harga, stok_awal]
 
         game_list = add_list(game_list, arr)
 
-        # save to file
-
-        return True
+        return game_list
 
     else:
 
-        return False
+        return []
+
+
+def create_game_id(id_number):
+    game_id = 'GAME'
+
+    while (length(game_id) + length(str(id_number))) < 7:
+        game_id += '0'
+
+    game_id += str(id_number)
+
+    return game_id
 
 
 def load_game(folder_name):
@@ -141,5 +150,6 @@ def save_game(game_list, folder_name):
     return write(__csv_header, game_list, folder_name, __file_name)
 
 
+# mengubah game id dengan format GAMEXXX menjadi angka XXX
 def convert_id(game_id):
-    return int(game_id[4:])
+    return int(str(game_id[4] + game_id[5] + game_id[6]))
