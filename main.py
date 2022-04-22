@@ -100,9 +100,6 @@ if __name__ == '__main__':
 
             pass
 
-        elif menu.strip() == 'test':
-            pass
-        
         elif menu.strip() == 'ubah_stok':
             search_arr = ubah_stok_front(game_arr)
         
@@ -116,4 +113,3 @@ if __name__ == '__main__':
                 print("Maaf, kamu belum membeli game. Ketik perintah beli_game untuk beli.")
             else:
                 print(search_arr)
-

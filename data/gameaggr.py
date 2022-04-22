@@ -179,14 +179,14 @@ def list_game_toko(game_list, sort_scheme=None):
             if sort_scheme == "tahun-":
                 arr = game_list
                 for i in range(length(arr)):
-                    for j in range(i+1, length(arr)):
+                    for j in range(i + 1, length(arr)):
                         if arr[i][3] < arr[j][3]:
                             arr[i][3], arr[j][3] = arr[j][3], arr[i][3]
                 return arr
             else:
                 arr = game_list
                 for i in range(length(arr)):
-                    for j in range(i+1, length(arr)):
+                    for j in range(i + 1, length(arr)):
                         if arr[i][3] > arr[j][3]:
                             arr[i][3], arr[j][3] = arr[j][3], arr[i][3]
                 return arr
@@ -194,14 +194,14 @@ def list_game_toko(game_list, sort_scheme=None):
             if sort_scheme == "harga-":
                 arr = game_list
                 for i in range(length(arr)):
-                    for j in range(i+1, length(arr)):
+                    for j in range(i + 1, length(arr)):
                         if arr[i][4] < arr[j][4]:
                             arr[i][4], arr[j][4] = arr[j][4], arr[i][4]
                 return arr
             else:
                 arr = game_list
                 for i in range(length(arr)):
-                    for j in range(i+1, length(arr)):
+                    for j in range(i + 1, length(arr)):
                         if arr[i][4] > arr[j][4]:
                             arr[i][4], arr[j][4] = arr[j][4], arr[i][4]
                 return arr
