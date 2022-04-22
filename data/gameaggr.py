@@ -153,3 +153,58 @@ def save_game(game_list, folder_name):
 # mengubah game id dengan format GAMEXXX menjadi angka XXX
 def convert_id(game_id):
     return int(str(game_id[4] + game_id[5] + game_id[6]))
+
+
+def ubah_stok(game_list, game_id, amount):
+    for i in range(length(game_list)):
+        if game_list[i][0] == game_id and amount >= 0:
+            game_list[i][5] += amount
+            arr = game_list
+            return (arr, 1)
+        elif game_list[i][0] == game_id and amount < 0:
+            if game_list[i][5] + amount > 0:
+                game_list[i][5] += amount
+                arr = game_list
+                return (arr, -1)
+            else:
+                arr = game_list
+                return (arr, 0)
+        else:
+            return []
+
+def list_game_toko(game_list, sort_scheme=None):
+    if sort_scheme is not None:
+        if sort_scheme == "tahun-" or sort_scheme == "tahun+":
+            if sort_scheme == "tahun-":
+                arr = game_list
+                for i in range(length(arr)):
+                    for j in range(i+1, length(arr)):
+                        if arr[i][3] < arr[j][3]:
+                            arr[i][3], arr[j][3] = arr[j][3], arr[i][3]
+                return arr
+            else:
+                arr = game_list
+                for i in range(length(arr)):
+                    for j in range(i+1, length(arr)):
+                        if arr[i][3] > arr[j][3]:
+                            arr[i][3], arr[j][3] = arr[j][3], arr[i][3]
+                return arr
+        elif sort_scheme == "harga-" or sort_scheme == "harga+":
+            if sort_scheme == "harga-":
+                arr = game_list
+                for i in range(length(arr)):
+                    for j in range(i+1, length(arr)):
+                        if arr[i][4] < arr[j][4]:
+                            arr[i][4], arr[j][4] = arr[j][4], arr[i][4]
+                return arr
+            else:
+                arr = game_list
+                for i in range(length(arr)):
+                    for j in range(i+1, length(arr)):
+                        if arr[i][4] > arr[j][4]:
+                            arr[i][4], arr[j][4] = arr[j][4], arr[i][4]
+                return arr
+        else:
+            return []
+    else:
+        return game_list
