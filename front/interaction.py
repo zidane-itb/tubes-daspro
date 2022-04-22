@@ -119,6 +119,7 @@ def search_game_at_store_front(game_list):
 
     return arr
 
+
 def ubah_stok_front(game_list):
     ID = input("Masukkan ID game: ")
     amount = int(input("Masukkan jumlah: "))
@@ -129,21 +130,21 @@ def ubah_stok_front(game_list):
         print("Tidak ada game dengan ID tersebut!")
     elif search_arr[2] == 0:
         arr = search_arr[0]
-        print("Stok game "+ ID +" gagal dikurangi karena stok kurang. Stok sekarang: "+search_arr[1])
+        print("Stok game " + ID + " gagal dikurangi karena stok kurang. Stok sekarang: " + search_arr[1])
     elif search_arr[2] == -1:
         arr = search_arr[0]
-        print("Stok game "+ ID +" berhasil dikurangi. Stok sekarang: "+search_arr[1])
+        print("Stok game " + ID + " berhasil dikurangi. Stok sekarang: " + search_arr[1])
     elif search_arr[2] == 1:
         arr = search_arr[0]
-        print("Stok game "+ ID +" berhasil ditambahkan. Stok sekarang: "+search_arr[1])
+        print("Stok game " + ID + " berhasil ditambahkan. Stok sekarang: " + search_arr[1])
     return arr
+
 
 def list_game_toko_front(game_list):
     sort_scheme = input("Skema sorting: ")
     arr = list_game_toko(game_list, sort_scheme)
-    if arr == []:
+    if not arr:
         print("Skema sorting tidak valid!")
         return arr
     else:
         return arr
-

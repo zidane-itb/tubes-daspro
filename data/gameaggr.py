@@ -172,6 +172,7 @@ def ubah_stok(game_list, game_id, amount):
         else:
             return []
 
+
 def list_game_toko(game_list, sort_scheme=None):
     if sort_scheme is not None:
         if sort_scheme == "tahun-" or sort_scheme == "tahun+":
