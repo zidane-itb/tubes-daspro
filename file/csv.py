@@ -1,57 +1,47 @@
 import os
-from default.liststc import splitter_to_array, add_list, length
+
+from default.liststc import splitter_to_array, add_list, length, convert_arr_to_type, el_in_array
 
 delimiter = ';'
 
 
-def write(headers, datas, folder_name, file_name):
+def write(header, arr, folder_name, file_name):
     folder_found = False
     url = ''
 
     for (root, dirs, files) in os.walk('..', topdown=True):
 
         # memvalidasi apakah directory sesuai dengan nama folder
-        if folder_name in dirs or root == folder_name:
+        if el_in_array(folder_name, dirs):
             url = os.path.join(root, folder_name)
             folder_found = True
 
             # menurut spek, jika file dengan nama yang sama ditemukan, maka harus menghapus existing file
             # terlebih dahulu
-            if file_name in files:
+            if el_in_array(file_name, files):
                 os.remove(file_name)
 
     if not folder_found:
         os.mkdir(path=folder_name)
         url = folder_name
 
-    try:
+    with open(os.path.join(url, file_name), 'w') as file:
 
-        with open(os.path.join(url, file_name), 'w') as file:
+        for i in range(length(header)):
+            file.write(header[i] + delimiter)
 
-            for header in headers:
-                file.write(header + delimiter)
+        file.write('\n')
+
+        for i in range(0, length(arr)):
+
+            for j in range(length(arr[i])):
+                file.write(str(arr[i][j]) + delimiter)
 
             file.write('\n')
 
-            # harus pake indeks
-            for data in datas:
 
-                # harus pake indeks
-                for text in data:
-                    file.write(str(text) + delimiter)
-
-                file.write('\n')
-
-        return True
-
-    except:
-
-        return False
-
-
-def read(folder_name, file_name, function_validator=None, function_search=None,
+def read(folder_name, file_name, type_arr=None, function_validator=None, function_search=None,
          validator_param=None, search_param=None):
-
     # penjelasan parameter fungsi
     #
     # folder_name: nama folder
@@ -74,7 +64,7 @@ def read(folder_name, file_name, function_validator=None, function_search=None,
     url = ''
 
     for (root, dirs, files) in os.walk('..', topdown=True):
-        if folder_name in dirs:
+        if el_in_array(folder_name, dirs):
             url = os.path.join(root, folder_name)
             folder_found = True
 
@@ -94,9 +84,12 @@ def read(folder_name, file_name, function_validator=None, function_search=None,
                 pass
 
             else:
-                if function_validator is None:
+                data = splitter_to_array(raw[i], delimiter)
 
-                    data = splitter_to_array(raw[i], delimiter)
+                if type_arr is not None:
+                    data = convert_arr_to_type(data, type_arr)
+
+                if function_validator is None:
 
                     if function_search is None:
                         data_arr = add_list(data_arr, data)
@@ -105,8 +98,6 @@ def read(folder_name, file_name, function_validator=None, function_search=None,
                         data_arr = add_list(data_arr, search)
 
                 else:
-
-                    data = splitter_to_array(raw[i], delimiter)
 
                     if function_validator(data, validator_param):
                         if function_search is None:

@@ -28,8 +28,13 @@ def search_game_by_id(game_list, game_id, lh=None, rh=None):
 
 
 def search_game_by_id_tahun(game_list, game_id=None, tahun=None):
+    # jika game id dan tahun tidak diberikan, return game_list utuh
+    if game_id is None and tahun is None:
+
+        return game_list
+
     # seach by game_id if game_id is not None
-    if game_id is not None:
+    elif game_id is not None:
 
         # menggunakan fungsi search_game_by_id untuk mencari index
         arr = game_list[search_game_by_id(game_list, game_id)]
@@ -48,11 +53,6 @@ def search_game_by_id_tahun(game_list, game_id=None, tahun=None):
 
         # return array jika field tahun tidak diisi
         return [arr]
-
-    # jika game id dan tahun tidak diberikan, return game_list utuh
-    elif game_id is None and tahun is None:
-
-        return game_list
 
     else:
         arr = []
@@ -113,8 +113,8 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
 
 
 def add_game(game_list, nama_game, kategori, tahun_rilis, harga, stok_awal):
-    if not (game_list is None and nama_game is None and kategori is None and
-            tahun_rilis is None and harga is None and stok_awal is None):
+    if not (
+            game_list is None and nama_game is None and kategori is None and tahun_rilis is None and harga is None and stok_awal is None):
 
         id_num = convert_id(game_list[length(game_list) - 1][0]) + 1
 
@@ -131,44 +131,26 @@ def add_game(game_list, nama_game, kategori, tahun_rilis, harga, stok_awal):
         return []
 
 
-def create_game_id(id_number):
-    game_id = 'GAME'
-
-    while (length(game_id) + length(str(id_number))) < 7:
-        game_id += '0'
-
-    game_id += str(id_number)
-
-    return game_id
-
-
-def load_game(folder_name):
-    return read(folder_name, __file_name)
-
-
-def save_game(game_list, folder_name):
-    return write(__csv_header, game_list, folder_name, __file_name)
-
-
-# mengubah game id dengan format GAMEXXX menjadi angka XXX
-def convert_id(game_id):
-    return int(str(game_id[4] + game_id[5] + game_id[6]))
-
-
 def ubah_stok(game_list, game_id, amount):
+    amount = float(amount)
+
     for i in range(length(game_list)):
+
         if game_list[i][0] == game_id and amount >= 0:
             game_list[i][5] += amount
             arr = game_list
-            return (arr, 1)
+            return arr, 1
+
         elif game_list[i][0] == game_id and amount < 0:
             if game_list[i][5] + amount > 0:
                 game_list[i][5] += amount
                 arr = game_list
-                return (arr, -1)
+                return arr, -1
+
             else:
                 arr = game_list
-                return (arr, 0)
+                return arr, 0
+
         else:
             return []
 
@@ -209,3 +191,112 @@ def list_game_toko(game_list, sort_scheme=None):
             return []
     else:
         return game_list
+
+
+def ubah_game(game_list, game_id, nama_game=None, kategori=None, tahun_rilis=None, harga=None):
+    if game_id is not None:
+
+        index = search_game_by_id(game_list, game_id)
+
+        if nama_game is not None:
+            game_list[index][1] = nama_game
+
+        if kategori is not None:
+            game_list[index][2] = kategori
+
+        if tahun_rilis is not None:
+            game_list[index][3] = tahun_rilis
+
+        if harga is not None:
+            game_list[index][4] = harga
+
+        return game_list
+
+    else:
+
+        return game_list
+
+
+def game_information(game_list, gameID):
+    for i in range(length(game_list)):
+        if game_list[i][0] == gameID:
+            return game_list[i], i
+    return [], -1
+
+
+def cek_user_have_bought(game_user, gameID):
+    for i in range(length(game_user)):
+        if game_user[i][0] == gameID:
+            return True
+    return False
+
+
+def cek_saldo_cukup(data_saldo_user, user_id, harga):
+    for i in range(length(data_saldo_user)):
+        if data_saldo_user[i][0] == user_id:
+            if data_saldo_user[i][5] >= harga:
+                return True, i
+            else:
+                return False, -1
+    return False, -1
+
+
+def buy_game(game_list, game_user, kepemilikan_full, riwayat_game, user_id, user_list):
+    index_user = user_list[int(user_id)-1]
+    username = index_user[1]
+    user_id = index_user[0]
+    saldo_user = index_user[5]
+
+    gameID = input("Masukkan ID Game: ")
+    gameInfo, index = game_information(game_list, gameID)
+    saldoCukup = cek_saldo_cukup(user_list, user_id, gameInfo[4])  # gameInfo indeks ke-4 adalah harga
+
+    if length(gameInfo) == 0:
+        print("ID Game Salah")
+
+    else:
+        if cek_user_have_bought(game_user, gameID):
+            print("Anda sudah memiliki Game tersebut!")
+
+        elif not saldoCukup:
+            print("Saldo anda tidak cukup untuk membeli Game tersebut!")
+
+        elif gameInfo[5] == 0:  # gameInfo indeks ke-5 adalah stok
+            print("Stok Game tersebut sedang habis!")
+
+        else:
+            game_list[index][5] -= 1
+            game_user += [[gameInfo[0], gameInfo[1], gameInfo[2], gameInfo[3], gameInfo[4]]]
+            riwayat_game += [[gameInfo[0], gameInfo[1], gameInfo[4], user_id, gameInfo[3]]]
+            kepemilikan_full = add_list(kepemilikan_full, [gameInfo[0], user_id])
+            index_user[5] -= gameInfo[4]
+
+            print("Game '" + gameInfo[1] + "' berhasil dibeli!")
+
+            return game_list, game_user, kepemilikan_full, riwayat_game, user_list
+
+    return []
+
+
+def create_game_id(id_number):
+    game_id = 'GAME'
+
+    while (length(game_id) + length(str(id_number))) < 7:
+        game_id += '0'
+
+    game_id += str(id_number)
+
+    return game_id
+
+
+def load_game(folder_name):
+    return read(folder_name=folder_name, file_name=__file_name, type_arr=[None, None, None, int, float, int])
+
+
+def save_game(game_list, folder_name):
+    return write(__csv_header, game_list, folder_name, __file_name)
+
+
+# mengubah game id dengan format GAMEXXX menjadi angka XXX
+def convert_id(game_id):
+    return int(str(game_id[4] + game_id[5] + game_id[6]))

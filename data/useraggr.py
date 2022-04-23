@@ -7,6 +7,7 @@ __csv_header = ['id', 'username', 'nama', 'password', 'role', 'saldo']
 __file_name = 'user.csv'
 __role = ['admin', 'user']
 
+
 # role: 1 = user, 0 = admin
 
 
@@ -39,7 +40,7 @@ def register(user_list, username, nama, password):
         password = cipher_string(password)
 
         # add account to array
-        arr = [arr_length, username, nama, password, 1, 0]
+        arr = [arr_length + 1, username, nama, password, 1, 0]
 
         return add_list(user_list, arr)
 
@@ -48,8 +49,33 @@ def register(user_list, username, nama, password):
         return []
 
 
+def cek_user(user, user_arr):
+    for u in range(length(user_arr) - 1):
+        if user_arr[u][1] == user:
+            return u
+    return -1
+
+
+def topup(user_arr):
+    InpUser = input("Masukkan username : ")
+    index = cek_user(InpUser, user_arr)
+    if index == -1:
+        print('Username "', InpUser, '"tidak ditemukan.')
+        return []
+
+    InpSaldo = int(input("Masukkan saldo: "))
+    if (user_arr[index][5] + InpSaldo) < 0:
+        print("Masukkan tidak valid.")
+    else:
+        user_arr[index][5] += InpSaldo
+        print("Top Up berhasil! Saldo ", user_arr[index][1], " bertambah menjadi ", user_arr[index][5])
+        return user_arr
+
+    return []
+
+
 def load_user(folder_name):
-    return read(folder_name, __file_name)
+    return read(folder_name=folder_name, file_name=__file_name, type_arr=[str, str, str, str, str, float])
 
 
 def save_user(user_list, folder_name):

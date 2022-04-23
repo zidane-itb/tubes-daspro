@@ -1,4 +1,3 @@
-
 # implementasi fungsi len bawaan python
 def length(arr):
     i = 0
@@ -20,7 +19,6 @@ def length(arr):
 # implementasi fungsi append bawaan python. fungsi ini bisa menerima lebih dari 1 elemen untuk di add_list
 # ke list
 def add_list(arr, *args):
-
     for i in range(length(args)):
         arr += [args[i]]
 
@@ -44,9 +42,20 @@ def splitter_to_array(string, delimiter):
     return arr
 
 
-def check_existing_el(el, arr):
+def el_in_array(el, arr):
     for i in arr:
         if i == el:
             return True
 
     return False
+
+
+def convert_arr_to_type(el_arr, type_arr):
+    num = length(el_arr)
+
+    if num == length(type_arr):
+        for i in range(num):
+            if type_arr[i] is not None:
+                el_arr[i] = type_arr[i](el_arr[i])
+
+    return el_arr

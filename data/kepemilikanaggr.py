@@ -1,13 +1,17 @@
-from file.csv import read
+from file.csv import read, write
 from data.gameaggr import search_game_by_id
-from default.liststc import length
 
 __csv_header = ['game_id', 'user_id']
 __file_name = 'kepemilikan.csv'
 
-#09
+
+def load_kepemilikan_full(folder_name):
+    return read(folder_name=folder_name, file_name=__file_name)
+
+
 def load_kepemilikan(folder_name, game_list, user_id):
-    return read(folder_name, __file_name, function_validator=verify_kepemilikan, function_search=search_game,
+    return read(folder_name=folder_name, file_name=__file_name, function_validator=verify_kepemilikan,
+                function_search=search_game,
                 validator_param=user_id, search_param=game_list)
 
 
@@ -21,3 +25,7 @@ def verify_kepemilikan(array, user_id):
 
 def search_game(game_list, array):
     return game_list[search_game_by_id(game_list, array[0])]
+
+
+def save_kepemilikan(arr, folder_name):
+    return write(__csv_header, arr, folder_name, __file_name)
