@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
             else:
 
-                print('tidak terdaftar sebagai admin')
+                print('Tidak terdaftar sebagai admin')
 
         # F04
         elif menu.strip() == 'tambah_game':
@@ -82,7 +82,7 @@ if __name__ == '__main__':
 
             else:
 
-                print('tidak terdaftar sebagai admin')
+                print('Tidak terdaftar sebagai admin')
 
         # F05
         elif menu.strip() == 'ubah_game':
@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
             else:
 
-                print('tidak terdaftar sebagai admin')
+                print('Tidak terdaftar sebagai admin')
 
         # F06
         elif menu.strip() == 'ubah_stok':
@@ -115,7 +115,7 @@ if __name__ == '__main__':
 
             else:
 
-                print('tidak terdaftar sebagai admin')
+                print('Tidak terdaftar sebagai admin')
 
         # F07
         elif menu.strip() == 'list_game_toko':
@@ -151,9 +151,11 @@ if __name__ == '__main__':
             search_arr = search_my_game_front(kepemilikan_arr)
 
             if not search_arr:
-                print('Game tidak ditemukan')
+                print('Daftar game pada inventory yang memenuhi kriteria:')
+                print('Tidak ada game pada inventory-mu yang memenuhi kriteria.')
 
             else:
+                print('Daftar game pada inventory yang memenuhi kriteria:')
                 print(search_arr)
 
         # F11
@@ -162,9 +164,11 @@ if __name__ == '__main__':
             search_arr = search_game_at_store_front(game_arr)
 
             if not search_arr:
-                print('Game tidak ditemukan')
+                print('Daftar game pada toko yang memenuhi kriteria:')
+                print('Tidak ada game pada toko yang memenuhi kriteria.')
 
             else:
+                print('Daftar game pada toko yang memenuhi kriteria:')
                 print(search_arr)
 
         # F12
@@ -189,5 +193,6 @@ if __name__ == '__main__':
         elif menu.strip() == 'save':
             save_front()
 
+        #F17
         elif menu.strip() == 'exit':
             exit_front(user_arr, game_arr, riwayat_arr, kepemilikan_full)

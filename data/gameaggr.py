@@ -109,7 +109,10 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
                 arr += [game_list[i]]
 
         # return array
-        return arr
+        if arr == []:
+            return game_list
+        else:
+            return arr
 
 
 def add_game(game_list, nama_game, kategori, tahun_rilis, harga, stok_awal):
@@ -132,8 +135,8 @@ def add_game(game_list, nama_game, kategori, tahun_rilis, harga, stok_awal):
 
 
 def ubah_stok(game_list, game_id, amount):
-    amount = float(amount)
-
+    amount = int(amount)
+    
     for i in range(length(game_list)):
 
         if game_list[i][0] == game_id and amount >= 0:

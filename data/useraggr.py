@@ -57,18 +57,23 @@ def cek_user(user, user_arr):
 
 
 def topup(user_arr):
-    InpUser = input("Masukkan username : ")
+    InpUser = input("Masukkan username: ")
+    InpSaldo = int(input("Masukkan saldo: "))
+
     index = cek_user(InpUser, user_arr)
+
     if index == -1:
-        print('Username "', InpUser, '"tidak ditemukan.')
+        print('Username "'+InpUser+'"tidak ditemukan.')
+        
         return []
 
-    InpSaldo = int(input("Masukkan saldo: "))
     if (user_arr[index][5] + InpSaldo) < 0:
-        print("Masukkan tidak valid.")
+        print("Masukan tidak valid.")
+
     else:
         user_arr[index][5] += InpSaldo
-        print("Top Up berhasil! Saldo ", user_arr[index][1], " bertambah menjadi ", user_arr[index][5])
+        print('Top Up berhasil! Saldo "'+InpUser+'" bertambah menjadi', user_arr[index][5])
+        
         return user_arr
 
     return []

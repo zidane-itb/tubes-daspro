@@ -3,7 +3,7 @@ from data.gameaggr import search_game_by_id_tahun, search_full, ubah_stok, list_
 from data.useraggr import register, login, save_user
 from data.kepemilikanaggr import save_kepemilikan
 from data.riwayataggr import save_riwayat
-from security.validator import validate_register
+from security.validator import validate_register, validate_game_id
 from sys import exit
 
 
@@ -46,11 +46,11 @@ def tambah_game_front(game_list):
     while True:
         correct = True
 
-        nama_game_tambah = input('Masukan nama game: ')
-        kategori_tambah = input('Masukan kategori game: ')
-        tahun_tambah = input('Masukan tahun rilis game: ')
-        harga_tambah = input('Masukan harga game: ')
-        stok_tambah = input('Masukkan stok awal game: ')
+        nama_game_tambah = input('Masukkan nama game: ')
+        kategori_tambah = input('Masukkan kategori: ')
+        tahun_tambah = input('Masukkan tahun rilis: ')
+        harga_tambah = input('Masukkan harga: ')
+        stok_tambah = input('Masukkan stok awal: ')
 
         if (nama_game_tambah == '' or nama_game_tambah is None) or (kategori_tambah == '' or kategori_tambah is None):
             correct = False
@@ -70,56 +70,61 @@ def tambah_game_front(game_list):
 
         else:
 
-            print('format salah')
+            print('Mohon masukkan semua informasi mengenai game agar dapat disimpan BNMO.')
 
     arr = add_game(game_list, nama_game_tambah, kategori_tambah,
                    tahun_tambah, harga_tambah, stok_tambah)
 
-    print('Berhasil menambahkan game', nama_game_tambah)
+    print('Selamat! Berhasil menambahkan game', nama_game_tambah, '.')
 
     return arr
 
 
 def login_front(user_arr):
-    username_login = input('username: ')
-    password_login = input('password: ')
+    username_login = input('Masukkan username: ')
+    password_login = input('Masukkan password: ')
 
     index = login(user_arr, username_login, password_login)
 
     if index == -1:
 
-        print('username atau password salah')
+        print('Username atau password salah atau tidak ditemukan.')
 
         return []
 
     else:
         logged_in_arr = user_arr[index]
 
-        print('Berhasil login sebagai', logged_in_arr[2])
+        print('Halo! Selamat datang di “Binomo”. Berhasil login sebagai', logged_in_arr[2])
 
         return logged_in_arr
 
 
 def search_my_game_front(game_arr):
-    game_id_search = input('Masukkan ID Game: ')
+    game_id_search = input('Masukkan ID game: ')
     tahun_rilis_search = input('Masukkan tahun rilis game: ')
 
     game_id_search = None if game_id_search.strip() == '' else game_id_search
     tahun_rilis_search = None if tahun_rilis_search.strip() == '' else tahun_rilis_search
 
-    try:
+    if (game_id_search is not None and validate_game_id(game_id_search)) or game_id_search is None:
 
-        tahun_rilis_search = int(tahun_rilis_search) if tahun_rilis_search is not None else None
+        try:
 
-    except ValueError:
+            tahun_rilis_search = int(tahun_rilis_search) if tahun_rilis_search is not None else None
 
-        print('Tahun rilis tidak valid')
+        except ValueError:
 
+            print('Tahun rilis tidak valid.')
+
+            return []
+
+        arr = search_game_by_id_tahun(game_arr, game_id_search, tahun_rilis_search)
+
+        return arr
+    else:
+        print('Game ID tidak valid')
         return []
-
-    arr = search_game_by_id_tahun(game_arr, game_id_search, tahun_rilis_search)
-
-    return arr
 
 
 def search_game_at_store_front(game_list):
@@ -135,8 +140,9 @@ def search_game_at_store_front(game_list):
     kategori_game = None if kategori_game.strip() == '' else kategori_game
     tahun_rilis = None if tahun_rilis.strip() == '' else tahun_rilis
 
-    arr = search_full(game_list, game_id, nama_game, harga_game, kategori_game, tahun_rilis)
-
+    if (game_id is not None and validate_game_id(game_id)) or game_id is None:
+        arr = search_full(game_list, game_id, nama_game, harga_game, kategori_game, tahun_rilis)
+    
     return arr
 
 
@@ -144,16 +150,12 @@ def ubah_stok_front(game_list):
     id_game = None
     amount = None
 
-    while True:
-        id_game = input('Masukkan ID Game:')
+    id_game = input('Masukkan ID game:')
 
-        if id_game.strip() == '':
-            pass
+    if (id_game is not None and validate_game_id(id_game)) or id_game is None:
+        print('Tidak ada game dengan ID tersebut!')
 
-        else:
-            break
-
-    while True:
+    else:
         amount = input("Masukkan jumlah: ")
         correct = True
 
@@ -163,26 +165,30 @@ def ubah_stok_front(game_list):
         except ValueError:
             correct = False
 
+        if amount % 1 != 0:
+            correct = False
+        
+        else:
+            amount = int(amount)
+        
         if correct:
-            break
+            search_arr = ubah_stok(game_list, id_game, amount)
+            arr = None
 
-    search_arr = ubah_stok(game_list, id_game, amount)
-    arr = None
+            if search_arr[1] == 0:
+                arr = search_arr[0]
+                print('Stok game', id, 'gagal dikurangi karena stok kurang. Stok sekarang:', search_arr[1])
+            elif search_arr[1] == -1:
+                arr = search_arr[0]
+                print('Stok game', id, 'berhasil dikurangi. Stok sekarang:', search_arr[1])
+            elif search_arr[1] == 1:
+                arr = search_arr[0]
+                print('Stok game', id, 'berhasil ditambahkan. Stok sekarang:', search_arr[1])
+            
+            return arr
 
-    if not search_arr:
-        arr = game_list
-        print("Tidak ada game dengan ID tersebut!")
-    elif search_arr[1] == 0:
-        arr = search_arr[0]
-        print("Stok game ", id, " gagal dikurangi karena stok kurang. Stok sekarang: ", search_arr[1])
-    elif search_arr[1] == -1:
-        arr = search_arr[0]
-        print("Stok game ", id, " berhasil dikurangi. Stok sekarang: ", search_arr[1])
-    elif search_arr[1] == 1:
-        arr = search_arr[0]
-        print("Stok game ", id, " berhasil ditambahkan. Stok sekarang: ", search_arr[1])
-
-    return arr
+        else:
+            print('Masukan jumlah salah!')
 
 
 def list_game_toko_front(game_list):
@@ -199,9 +205,10 @@ def ubah_game_front(game_list):
     id_game = None
 
     while True:
-        id_game = input('Masukkan ID Game: ')
+        id_game = input('Masukkan ID game: ')
 
-        if id_game.strip() == '':
+        if (id_game is not None and not validate_game_id(id_game)) or id_game is None:
+            print('Masukan ID game tidak valid.')
             pass
 
         else:
@@ -249,7 +256,7 @@ def ubah_game_front(game_list):
                 return arr
 
             else:
-                print('Input tidak valid.')
+                print('Masukan tidak valid.')
 
                 pass
 
@@ -296,7 +303,7 @@ def exit_front(user_arr, game_arr, riwayat_arr, kepemilikan_full):
         save_front(user_arr, game_arr, riwayat_arr, kepemilikan_full)
 
     else:
-        pass
+        exit()
 
 
 def help_front(role):
@@ -311,7 +318,7 @@ def help_front(role):
         print("7. search_game_at_store - Untuk mencari game yang dijual pada toko")
         print("8. topup - Untuk menambah/mengurangi saldo dari user")
         print("9. save - Untuk menyimpan data file setelah melakukan perubahan")
-    elif role == "1":
+    else:
         print("===========================HELP===========================")
         print("1. login - Untuk melakukan login ke dalam sistem")
         print("2. list_game_toko - Untuk melihat list game yang dijual pada toko")
@@ -320,5 +327,3 @@ def help_front(role):
         print("5. search_my_game - Untuk mencari game yang dimiliki berdasarkan id game/tahun rilis")
         print("6. search_game_at_store - Untuk mencari game yang dijual pada toko")
         print("7. save - Untuk menyimpan data file setelah melakukan perubahan")
-    else:
-        return
