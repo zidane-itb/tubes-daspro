@@ -65,6 +65,7 @@ def print_format(list_arr):
     maxnama = 0
     maxharga = 0
     maxkateg = 0
+    maxtahun = 0
     if not arr:
         return []
 
@@ -83,9 +84,13 @@ def print_format(list_arr):
                 elif k == 3:
                     text = "{isi:<{diff}s}".format(isi=arr[k], diff=maxkateg)
                     print(text, end=' | ')
+                elif k == 4:
+                    text = "{isi:<{diff}s}".format(isi=arr[k], diff=maxtahun)
+                    print(text, end=' | ')
                 else:
                     text = "{isi:<{diff}s}".format(isi=arr[k], diff=0)
                     print(text, end=' | ')
+        return[]
 
     else:
         for a in range(length(arr)):
@@ -95,6 +100,8 @@ def print_format(list_arr):
                 maxharga = length(arr[a][2])
             if maxkateg < length(arr[a][3]):
                 maxkateg = length(arr[a][3])
+            if maxtahun < length(arr[a][4]):
+                maxtahun = length(arr[a][4])
 
         for i in range(length(arr)):
             print(str(i+1) + '. ', end='')
@@ -111,6 +118,10 @@ def print_format(list_arr):
                     elif j == 3:
                         text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxkateg)
                         print(text, end=' | ')
+                    elif j == 4:
+                        text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxtahun)
+                        print(text, end=' | ')
                     else:
                         text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=0)
                         print(text, end=' | ')
+        return []
