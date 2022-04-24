@@ -109,7 +109,7 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
                 arr += [game_list[i]]
 
         # return array
-        if arr == []:
+        if not arr:
             return game_list
         else:
             return arr

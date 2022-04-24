@@ -210,13 +210,18 @@ if __name__ == '__main__':
         elif menu.strip() == 'topup':
 
             if logged_in_arr[4] == '0':
-                arr = topup(user_arr)
+                try:
+                    arr = topup(user_arr)
 
-                if arr:
-                    user_arr = arr
+                    if arr:
+                        user_arr = arr
 
-                else:
-                    pass
+                    else:
+                        pass
+
+                except ValueError:
+                    print('Input tidak valid')
+
             else:
                 print('Tidak terdaftar sebagai admin')
 

@@ -142,9 +142,15 @@ def search_game_at_store_front(game_list):
     kategori_game = None if kategori_game.strip() == '' else kategori_game
     tahun_rilis = None if tahun_rilis.strip() == '' else tahun_rilis
 
+    if harga_game is not None:
+        harga_game = float(harga_game)
+
+    if tahun_rilis is not None:
+        tahun_rilis = int(tahun_rilis)
+
     if (game_id is not None and validate_game_id(game_id.strip())) or game_id is None:
         arr = search_full(game_list, game_id, nama_game, harga_game, kategori_game, tahun_rilis)
-    
+
     return arr
 
 
