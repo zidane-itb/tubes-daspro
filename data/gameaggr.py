@@ -92,7 +92,7 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
 
         # return array jika semua field sesuai
         if id_fulfill and nama_fulfill and harga_fulfill and kategori_fulfill and tahun_fulfill:
-            return arr
+            return [arr]
         else:
             return []
 
@@ -106,7 +106,7 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
                     kategori is not None and kategori == game_list[i][2]) or (
                     tahun_rilis is not None and tahun_rilis == game_list[i][3]):
                 # game dengan fields sesuai parameter found
-                arr += [game_list[i]]
+                arr = add_list(arr, game_list[i])
 
         # return array
         if not arr:
@@ -116,8 +116,8 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
 
 
 def add_game(game_list, nama_game, kategori, tahun_rilis, harga, stok_awal):
-    if not (
-            game_list is None and nama_game is None and kategori is None and tahun_rilis is None and harga is None and stok_awal is None):
+    if not (game_list is None and nama_game is None and kategori is None and tahun_rilis is None
+            and harga is None and stok_awal is None):
 
         id_num = convert_id(game_list[length(game_list) - 1][0]) + 1
 

@@ -60,6 +60,7 @@ def convert_arr_to_type(el_arr, type_arr):
 
     return el_arr
 
+
 def print_format(list_arr):
     arr = list_arr
     maxnama = 0
@@ -72,7 +73,7 @@ def print_format(list_arr):
     if length(arr) == 1:
         print(str(1) + '. ', end='')
         for k in range(length(arr)):
-            if k == length(arr)-1:
+            if k == length(arr) - 1:
                 print(arr[k])
             else:
                 if k == 1:
@@ -87,12 +88,14 @@ def print_format(list_arr):
                 elif k == 4:
                     text = "{isi:<{diff}s}".format(isi=arr[k], diff=maxtahun)
                     print(text, end=' | ')
+                    print('sdasda')
                 else:
                     text = "{isi:<{diff}s}".format(isi=arr[k], diff=0)
                     print(text, end=' | ')
-        return[]
+        return []
 
     else:
+        print(arr)
         for a in range(length(arr)):
             if maxnama < length(arr[a][1]):
                 maxnama = length(arr[a][1])
@@ -104,9 +107,9 @@ def print_format(list_arr):
                 maxtahun = length(arr[a][4])
 
         for i in range(length(arr)):
-            print(str(i+1) + '. ', end='')
+            print(str(i + 1) + '. ', end='')
             for j in range(length(arr[i])):
-                if j == length(arr[i])-1:
+                if j == length(arr[i]) - 1:
                     print(arr[i][j])
                 else:
                     if j == 1:
