@@ -61,3 +61,24 @@ def convert_arr_to_type(el_arr, type_arr):
     return el_arr
 
 
+def print_format(list_arr):
+    arr = list_arr
+    diff = []
+    if not arr:
+        return []
+
+    else:
+        for a in range(1, length(arr)):
+            b = 0
+            for b in range(length(arr[b])):
+                if diff[a] < length(arr[b][a]):
+                    diff[a] = length(arr[b][a])
+        for i in range(length(arr)):
+            print(str(i+1) + '. ', end='')
+            for j in range(length(arr[i])):
+                if j == length(arr[i])-1:
+                    print(arr[i][j])
+                else:
+                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=diff[j])
+                    print(text, end=' | ')
+        return []
