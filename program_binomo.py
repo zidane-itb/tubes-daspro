@@ -196,18 +196,17 @@ if __name__ == '__main__':
         # F11
         elif menu.strip() == 'search_game_at_store':
 
-            try:
-                search_arr = search_game_at_store_front(game_arr)
 
-                if not search_arr:
-                    print('Tidak ada game pada toko yang memenuhi kriteria.')
+            search_arr = search_game_at_store_front(game_arr)
 
-                else:
-                    print('Daftar game pada toko yang memenuhi kriteria:')
-                    print_format(search_arr)
+            if not search_arr:
+                print('Tidak ada game pada toko yang memenuhi kriteria.')
 
-            except ValueError:
-                print('Input tidak valid.')
+            else:
+                print('Daftar game pada toko yang memenuhi kriteria:')
+                print_format(search_arr)
+
+
 
         # F12
         elif menu.strip() == 'topup':
