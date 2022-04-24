@@ -65,30 +65,52 @@ def print_format(list_arr):
     maxnama = 0
     maxharga = 0
     maxkateg = 0
+    if not arr:
+        return []
 
-    for a in range(length(arr)):
-        if maxnama < length(arr[a][1]):
-            maxnama = length(arr[a][1])
-        if maxharga < length(arr[a][2]):
-            maxharga = length(arr[a][2])
-        if maxkateg < length(arr[a][3]):
-            maxkateg = length(arr[a][3])
-
-    for i in range(length(arr)):
-        print(str(i+1) + '. ', end='')
-        for j in range(length(arr[i])):
-            if j == length(arr[i])-1:
-                print(arr[i][j])
+    if length(arr) == 1:
+        print(str(1) + '. ', end='')
+        for k in range(length(arr)):
+            if k == length(arr)-1:
+                print(arr[k])
             else:
-                if j == 1:
-                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxnama)
+                if k == 1:
+                    text = "{isi:<{diff}s}".format(isi=arr[k], diff=maxnama)
                     print(text, end=' | ')
-                elif j == 2:
-                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxharga)
+                elif k == 2:
+                    text = "{isi:<{diff}s}".format(isi=arr[k], diff=maxharga)
                     print(text, end=' | ')
-                elif j == 3:
-                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxkateg)
+                elif k == 3:
+                    text = "{isi:<{diff}s}".format(isi=arr[k], diff=maxkateg)
                     print(text, end=' | ')
                 else:
-                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=0)
+                    text = "{isi:<{diff}s}".format(isi=arr[k], diff=0)
                     print(text, end=' | ')
+
+    else:
+        for a in range(length(arr)):
+            if maxnama < length(arr[a][1]):
+                maxnama = length(arr[a][1])
+            if maxharga < length(arr[a][2]):
+                maxharga = length(arr[a][2])
+            if maxkateg < length(arr[a][3]):
+                maxkateg = length(arr[a][3])
+
+        for i in range(length(arr)):
+            print(str(i+1) + '. ', end='')
+            for j in range(length(arr[i])):
+                if j == length(arr[i])-1:
+                    print(arr[i][j])
+                else:
+                    if j == 1:
+                        text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxnama)
+                        print(text, end=' | ')
+                    elif j == 2:
+                        text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxharga)
+                        print(text, end=' | ')
+                    elif j == 3:
+                        text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxkateg)
+                        print(text, end=' | ')
+                    else:
+                        text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=0)
+                        print(text, end=' | ')
