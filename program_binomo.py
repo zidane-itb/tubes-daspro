@@ -196,32 +196,30 @@ if __name__ == '__main__':
         # F11
         elif menu.strip() == 'search_game_at_store':
 
-            search_arr = search_game_at_store_front(game_arr)
+            try:
+                search_arr = search_game_at_store_front(game_arr)
 
-            if not search_arr:
-                print('Daftar game pada toko yang memenuhi kriteria:')
-                print('Tidak ada game pada toko yang memenuhi kriteria.')
+                if not search_arr:
+                    print('Tidak ada game pada toko yang memenuhi kriteria.')
 
-            else:
-                print('Daftar game pada toko yang memenuhi kriteria:')
-                print_format(search_arr)
+                else:
+                    print('Daftar game pada toko yang memenuhi kriteria:')
+                    print_format(search_arr)
+
+            except ValueError:
+                print('Input tidak valid.')
 
         # F12
         elif menu.strip() == 'topup':
 
             if logged_in_arr[4] == '0':
-                try:
-                    arr = topup(user_arr)
+                arr = topup(user_arr)
 
-                    if arr:
-                        user_arr = arr
+                if arr:
+                    user_arr = arr
 
-                    else:
-                        pass
-
-                except ValueError:
-                    print('Input tidak valid')
-
+                else:
+                    pass
             else:
                 print('Tidak terdaftar sebagai admin')
 
