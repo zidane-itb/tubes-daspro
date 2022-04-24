@@ -9,11 +9,11 @@ from front.interaction import register_front, login_front, search_my_game_front,
     save_front, exit_front
 
 
-def load(nama_folder, user_id):
-    arr_game = load_game(nama_folder)
-    arr_kepemilikan = load_kepemilikan(nama_folder, arr_game, user_id)
-    arr_kepemilikan_full = load_kepemilikan_full(nama_folder)
-    arr_riwayat = load_riwayat(nama_folder)
+def load(nama_folder, user_id, url_file):
+    arr_game = load_game(folder_name=nama_folder, url_file=url_file)
+    arr_kepemilikan = load_kepemilikan(folder_name=nama_folder, game_list=arr_game, user_id=user_id, url_file=url_file)
+    arr_kepemilikan_full = load_kepemilikan_full(folder_name=nama_folder, url_file=url_file)
+    arr_riwayat = load_riwayat(folder_name=nama_folder, url_file=url_file)
 
     return arr_game, arr_kepemilikan, arr_kepemilikan_full, arr_riwayat
 
@@ -44,14 +44,14 @@ if __name__ == '__main__':
 
     print('loading...')
 
-    user_arr = load_user(folder_name)
+    user_arr, url_file = load_user(folder_name, url_file=None)
 
     print('Selamat datang! Silahkan login terlebih dahulu')
 
     # F03
     logged_in_arr = login(user_arr)
 
-    loader = load(folder_name, logged_in_arr[0])
+    loader = load(nama_folder=folder_name, user_id=logged_in_arr[0], url_file=url_file)
     game_arr = loader[0]
     kepemilikan_arr = loader[1]
     kepemilikan_full = loader[2]
@@ -173,13 +173,16 @@ if __name__ == '__main__':
 
         # F12
         elif menu.strip() == 'topup':
-            arr = topup(user_arr)
+            if logged_in_arr[0] == '0':
+                arr = topup(user_arr)
 
-            if arr:
-                user_arr = arr
+                if arr:
+                    user_arr = arr
 
+                else:
+                    pass
             else:
-                pass
+                print('Tidak terdaftar sebagai admin')
 
         # F13
         elif menu.strip() == 'riwayat':
@@ -191,7 +194,7 @@ if __name__ == '__main__':
 
         # F16
         elif menu.strip() == 'save':
-            save_front()
+            save_front(user_arr, game_arr, riwayat_arr, kepemilikan_full)
 
         #F17
         elif menu.strip() == 'exit':

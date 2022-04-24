@@ -274,10 +274,10 @@ def save_front(user_arr, game_arr, riwayat_arr, kepemilikan_full):
 
     try:
         succeed = True
-        save_user(user_arr, nama_folder)
-        save_game(game_arr, nama_folder)
-        save_riwayat(riwayat_arr, nama_folder)
-        save_kepemilikan(kepemilikan_full, nama_folder)
+        url = save_user(user_arr, nama_folder, url_file=None)
+        save_game(game_arr, nama_folder, url_file=url)
+        save_riwayat(riwayat_arr, nama_folder, url_file=url)
+        save_kepemilikan(kepemilikan_full, nama_folder, url_file=url)
 
     except Exception as e:
         print(e)
@@ -285,7 +285,7 @@ def save_front(user_arr, game_arr, riwayat_arr, kepemilikan_full):
 
     if succeed:
         print('Data telah disimpan pada folder', str(nama_folder)+'!')
-        exit()
+
     else:
         print('Penyimpanan data gagal, silahkan coba lagi.')
 
