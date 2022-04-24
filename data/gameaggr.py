@@ -238,26 +238,24 @@ def cek_saldo_cukup(data_saldo_user, user_id, harga):
     for i in range(length(data_saldo_user)):
         if data_saldo_user[i][0] == user_id:
             if data_saldo_user[i][5] >= harga:
-                return True, i
+                return True
             else:
-                return False, -1
-    return False, -1
+                return False
+    return False
 
 
 def buy_game(game_list, game_user, kepemilikan_full, riwayat_game, user_id, user_list):
     index_user = user_list[int(user_id)-1]
-    username = index_user[1]
     user_id = index_user[0]
-    saldo_user = index_user[5]
 
     gameID = input("Masukkan ID Game: ")
     gameInfo, index = game_information(game_list, gameID)
-    saldoCukup = cek_saldo_cukup(user_list, user_id, gameInfo[4])  # gameInfo indeks ke-4 adalah harga
 
     if length(gameInfo) == 0:
         print("ID Game Salah")
 
     else:
+        saldoCukup = cek_saldo_cukup(user_list, user_id, gameInfo[4]) # gameInfo indeks ke-4 adalah harga
         if cek_user_have_bought(game_user, gameID):
             print("Anda sudah memiliki Game tersebut!")
 
@@ -292,12 +290,12 @@ def create_game_id(id_number):
     return game_id
 
 
-def load_game(folder_name):
-    return read(folder_name=folder_name, file_name=__file_name, type_arr=[None, None, None, int, float, int])
+def load_game(folder_name, url_file):
+    return read(folder_name=folder_name, file_name=__file_name, type_arr=[None, None, None, int, float, int], url_file=url_file)
 
 
-def save_game(game_list, folder_name):
-    return write(__csv_header, game_list, folder_name, __file_name)
+def save_game(game_list, folder_name, url_file):
+    return write(__csv_header, game_list, folder_name, __file_name, url_file=url_file)
 
 
 # mengubah game id dengan format GAMEXXX menjadi angka XXX

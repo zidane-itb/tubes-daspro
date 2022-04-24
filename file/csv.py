@@ -5,21 +5,26 @@ from default.liststc import splitter_to_array, add_list, length, convert_arr_to_
 delimiter = ';'
 
 
-def write(header, arr, folder_name, file_name):
+def write(header, arr, folder_name, file_name, url_file=None):
+    url = url_file
+    url_none = True if not url else False
     folder_found = False
     url = ''
 
-    for (root, dirs, files) in os.walk('..', topdown=True):
+    if url is None:
+        for (root, dirs, files) in os.walk('..', topdown=True):
 
-        # memvalidasi apakah directory sesuai dengan nama folder
-        if el_in_array(folder_name, dirs):
-            url = os.path.join(root, folder_name)
-            folder_found = True
+            # memvalidasi apakah directory sesuai dengan nama folder
+            if el_in_array(folder_name, dirs):
+                url = os.path.join(root, folder_name)
+                folder_found = True
 
-            # menurut spek, jika file dengan nama yang sama ditemukan, maka harus menghapus existing file
-            # terlebih dahulu
-            if el_in_array(file_name, files):
-                os.remove(file_name)
+                # menurut spek, jika file dengan nama yang sama ditemukan, maka harus menghapus existing file
+                # terlebih dahulu
+                if el_in_array(file_name, files):
+                    os.remove(file_name)
+    else:
+        folder_found=True
 
     if not folder_found:
         os.mkdir(path=folder_name)
@@ -39,9 +44,11 @@ def write(header, arr, folder_name, file_name):
 
             file.write('\n')
 
+    return url if url_none else None
+
 
 def read(folder_name, file_name, type_arr=None, function_validator=None, function_search=None,
-         validator_param=None, search_param=None):
+         validator_param=None, search_param=None, url_file=None):
     # penjelasan parameter fungsi
     #
     # folder_name: nama folder
@@ -60,13 +67,17 @@ def read(folder_name, file_name, type_arr=None, function_validator=None, functio
     #
     # search_param: parameter yang akan digunakan function_search
 
+    url = url_file
+    url_none = True if not url_file else False
     folder_found = False
-    url = ''
 
-    for (root, dirs, files) in os.walk('..', topdown=True):
-        if el_in_array(folder_name, dirs):
-            url = os.path.join(root, folder_name)
-            folder_found = True
+    if url is None:
+        for (root, dirs, files) in os.walk('..', topdown=True):
+            if el_in_array(folder_name, dirs):
+                url = os.path.join(root, folder_name)
+                folder_found = True
+    else:
+        folder_found = True
 
     if not folder_found:
         raise FileNotFoundError
@@ -107,4 +118,7 @@ def read(folder_name, file_name, type_arr=None, function_validator=None, functio
                             search = function_search(search_param, data)
                             data_arr = add_list(data_arr, search)
 
-    return data_arr
+    if url_none:
+        return data_arr, url
+    else:
+        return data_arr

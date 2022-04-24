@@ -79,9 +79,9 @@ def topup(user_arr):
     return []
 
 
-def load_user(folder_name):
-    return read(folder_name=folder_name, file_name=__file_name, type_arr=[str, str, str, str, str, float])
+def load_user(folder_name, url_file):
+    return read(folder_name=folder_name, file_name=__file_name, type_arr=[str, str, str, str, str, float], url_file=url_file)
 
 
-def save_user(user_list, folder_name):
-    return write(__csv_header, user_list, folder_name, __file_name)
+def save_user(user_list, folder_name, url_file):
+    return write(__csv_header, user_list, folder_name, __file_name, url_file=url_file)
