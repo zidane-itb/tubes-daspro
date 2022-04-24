@@ -128,6 +128,8 @@ def search_my_game_front(game_arr):
 
 
 def search_game_at_store_front(game_list):
+    arr = []
+
     game_id = input('Masukkan ID game: ')
     nama_game = input('Masukkan nama game: ')
     harga_game = input('Masukkan harga game: ')
@@ -140,7 +142,7 @@ def search_game_at_store_front(game_list):
     kategori_game = None if kategori_game.strip() == '' else kategori_game
     tahun_rilis = None if tahun_rilis.strip() == '' else tahun_rilis
 
-    if (game_id is not None and validate_game_id(game_id)) or game_id is None:
+    if (game_id is not None and validate_game_id(game_id.strip())) or game_id is None:
         arr = search_full(game_list, game_id, nama_game, harga_game, kategori_game, tahun_rilis)
     
     return arr

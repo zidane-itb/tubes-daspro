@@ -28,15 +28,15 @@ def __validate_register_char(char):
 
 
 def validate_game_id(game_id):
-    if not game_id[0] == 'G' or game_id[1] == 'A' or game_id[2] == 'M' or game_id[3] == 'E':
+    if not (game_id[0] == 'G' and game_id[1] == 'A' and game_id[2] == 'M' and game_id[3] == 'E'):
 
         return False
 
     else:
         try:
-            game_id[5] = int(game_id[5])
-            game_id[6] = int(game_id[6])
-            game_id[7] = int(game_id[7])
+            int(game_id[4])
+            int(game_id[5])
+            int(game_id[6])
 
         except ValueError:
 

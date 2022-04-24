@@ -1,4 +1,5 @@
 import argparse
+import sys
 
 from data.gameaggr import load_game,buy_game
 from data.kepemilikanaggr import load_kepemilikan, load_kepemilikan_full
@@ -21,13 +22,13 @@ def load(nama_folder, user_id, url_file):
 
 
 def get_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(usage='python program_binomo.py <nama_folder>')
 
-    parser.add_argument("param")
+    parser.add_argument("param", nargs='*')
 
     args = parser.parse_args()
 
-    return args.param
+    return args.param, parser
 
 
 def login(user_arr):
@@ -42,11 +43,22 @@ def login(user_arr):
 
 
 if __name__ == '__main__':
-    folder_name = get_args()
+    folder_name, arg_obj = get_args()
+    folder_name = folder_name[0]
+
+    if not folder_name:
+        print('Tidak ada nama folder yang diberikan!')
+        arg_obj.print_usage()
+        sys.exit()
 
     print('loading...')
 
-    user_arr, url_file = load_user(folder_name, url_file=None)
+    try:
+        user_arr, url_file = load_user(folder_name, url_file=None)
+
+    except FileNotFoundError:
+        print('Folder "'+str(folder_name)+'" tidak ditemukan.')
+        sys.exit()
 
     print('Selamat datang! Silahkan login terlebih dahulu')
 
@@ -121,8 +133,10 @@ if __name__ == '__main__':
         elif menu.strip() == 'list_game_toko':
             
             search_arr = list_game_toko_front(game_arr)
-            print("Daftar game di toko:")
-            print_format(search_arr)
+
+            if search_arr:
+                print("Daftar game di toko:")
+                print_format(search_arr)
 
         # F08
         elif menu.strip() == 'buy_game':
@@ -173,6 +187,7 @@ if __name__ == '__main__':
 
                 else:
                     print('Daftar game pada inventory yang memenuhi kriteria:')
+                    print(search_arr)
                     print_format(search_arr)
             else:
 
