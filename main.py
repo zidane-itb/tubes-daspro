@@ -7,6 +7,8 @@ from data.riwayataggr import load_riwayat
 from front.interaction import register_front, login_front, search_my_game_front, \
     search_game_at_store_front, ubah_stok_front, list_game_toko_front, tambah_game_front, ubah_game_front, help_front, \
     save_front, exit_front
+from file.magicconchshell import kerangajaib
+from default.liststc import print_format
 
 
 def load(nama_folder, user_id, url_file):
@@ -94,8 +96,6 @@ if __name__ == '__main__':
                 if arr:
                     game_arr = arr
 
-                    print(game_arr)
-
                 if not arr:
                     pass
 
@@ -119,44 +119,64 @@ if __name__ == '__main__':
 
         # F07
         elif menu.strip() == 'list_game_toko':
+            
             search_arr = list_game_toko_front(game_arr)
-            print(search_arr)
+            print("Daftar game di toko:")
+            print_format(search_arr)
 
         # F08
         elif menu.strip() == 'buy_game':
-            tup = buy_game(game_arr, kepemilikan_arr, kepemilikan_full, riwayat_arr, logged_in_arr[0], user_arr)
+            
+            if logged_in_arr[4] == '1':
+                tup = buy_game(game_arr, kepemilikan_arr, kepemilikan_full, riwayat_arr, logged_in_arr[0], user_arr)
 
-            if tup:
+                if tup:
 
-                game_arr = tup[0]
-                kepemilikan_arr = tup[1]
-                kepemilikan_full = tup[2]
-                riwayat_arr = tup[3]
-                user_arr = tup[4]
+                    game_arr = tup[0]
+                    kepemilikan_arr = tup[1]
+                    kepemilikan_full = tup[2]
+                    riwayat_arr = tup[3]
+                    user_arr = tup[4]
+
+                else:
+                    print('Anda tidak memiliki game tersebut.')
+                    pass
 
             else:
-                pass
+
+                print('Tidak terdaftar sebagai user.')
 
         # F09
         elif menu.strip() == 'list_game':
-            search_arr = kepemilikan_arr
-            if not search_arr:
-                print("Maaf, kamu belum membeli game. Ketik perintah beli_game untuk beli.")
+            
+            if logged_in_arr[4] == '1':
+                search_arr = kepemilikan_arr
+                if not search_arr:
+                    print("Maaf, kamu belum membeli game. Ketik perintah beli_game untuk beli.")
+                else:
+                    print('Daftar game:')
+                    print_format(search_arr)
             else:
-                print(search_arr)
+
+                print('Tidak terdaftar sebagai user.')
 
         # F10
         elif menu.strip() == 'search_my_game':
 
-            search_arr = search_my_game_front(kepemilikan_arr)
+            if logged_in_arr[4] == '1':
 
-            if not search_arr:
-                print('Daftar game pada inventory yang memenuhi kriteria:')
-                print('Tidak ada game pada inventory-mu yang memenuhi kriteria.')
+                search_arr = search_my_game_front(kepemilikan_arr)
 
+                if not search_arr:
+                    print('Daftar game pada inventory yang memenuhi kriteria:')
+                    print('Tidak ada game pada inventory-mu yang memenuhi kriteria.')
+
+                else:
+                    print('Daftar game pada inventory yang memenuhi kriteria:')
+                    print_format(search_arr)
             else:
-                print('Daftar game pada inventory yang memenuhi kriteria:')
-                print(search_arr)
+
+                print('Tidak terdaftar sebagai user.')
 
         # F11
         elif menu.strip() == 'search_game_at_store':
@@ -169,11 +189,12 @@ if __name__ == '__main__':
 
             else:
                 print('Daftar game pada toko yang memenuhi kriteria:')
-                print(search_arr)
+                print_format(search_arr)
 
         # F12
         elif menu.strip() == 'topup':
-            if logged_in_arr[0] == '0':
+
+            if logged_in_arr[4] == '0':
                 arr = topup(user_arr)
 
                 if arr:
@@ -186,7 +207,13 @@ if __name__ == '__main__':
 
         # F13
         elif menu.strip() == 'riwayat':
-            print(kepemilikan_arr)
+        
+            if logged_in_arr[4] == '1':
+                print(kepemilikan_arr)
+
+            else:
+
+                print('Tidak terdaftar sebagai user.')
 
         # F14
         elif menu.strip() == 'help':
@@ -199,3 +226,7 @@ if __name__ == '__main__':
         #F17
         elif menu.strip() == 'exit':
             exit_front(user_arr, game_arr, riwayat_arr, kepemilikan_full)
+        
+        #B02
+        elif menu.strip() == 'kerangajaib':
+            kerangajaib()

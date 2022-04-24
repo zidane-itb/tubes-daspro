@@ -59,3 +59,36 @@ def convert_arr_to_type(el_arr, type_arr):
                 el_arr[i] = type_arr[i](el_arr[i])
 
     return el_arr
+
+def print_format(list_arr):
+    arr = list_arr
+    maxnama = 0
+    maxharga = 0
+    maxkateg = 0
+
+    for a in range(length(arr)):
+        if maxnama < length(arr[a][1]):
+            maxnama = length(arr[a][1])
+        if maxharga < length(arr[a][2]):
+            maxharga = length(arr[a][2])
+        if maxkateg < length(arr[a][3]):
+            maxkateg = length(arr[a][3])
+
+    for i in range(length(arr)):
+        print(str(i+1) + '. ', end='')
+        for j in range(length(arr[i])):
+            if j == length(arr[i])-1:
+                print(arr[i][j])
+            else:
+                if j == 1:
+                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxnama)
+                    print(text, end=' | ')
+                elif j == 2:
+                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxharga)
+                    print(text, end=' | ')
+                elif j == 3:
+                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=maxkateg)
+                    print(text, end=' | ')
+                else:
+                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=0)
+                    print(text, end=' | ')
