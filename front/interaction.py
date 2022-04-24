@@ -1,3 +1,5 @@
+import sys
+
 from data.gameaggr import search_game_by_id_tahun, search_full, ubah_stok, list_game_toko, add_game, ubah_game, \
     search_game_by_id, save_game
 from data.useraggr import register, login, save_user
@@ -5,7 +7,6 @@ from data.kepemilikanaggr import save_kepemilikan
 from data.riwayataggr import save_riwayat
 from security.validator import validate_register, validate_game_id
 from sys import exit
-
 
 
 def register_front(user_arr):
@@ -65,12 +66,16 @@ def tambah_game_front(game_list):
             correct = False
 
         if correct:
+            if int(tahun_tambah) < 0 or float(harga_tambah) < 0 or int(stok_tambah) < 0:
+                correct = False
+
+        if correct:
 
             break
 
         else:
 
-            print('Mohon masukkan semua informasi mengenai game agar dapat disimpan BNMO.')
+            print('Mohon masukkan semua informasi mengenai game dengan benar agar dapat disimpan BNMO.')
 
     arr = add_game(game_list, nama_game_tambah, kategori_tambah,
                    tahun_tambah, harga_tambah, stok_tambah)
@@ -158,10 +163,11 @@ def ubah_stok_front(game_list):
     id_game = None
     amount = None
 
-    id_game = input('Masukkan ID game:')
+    id_game = input('Masukkan ID game: ')
 
-    if (id_game is not None and validate_game_id(id_game)) or id_game is None:
+    if (id_game is not None and not validate_game_id(id_game.strip())) or id_game is None or search_game_by_id(game_list, id_game):
         print('Tidak ada game dengan ID tersebut!')
+        return []
 
     else:
         amount = input("Masukkan jumlah: ")
@@ -183,15 +189,17 @@ def ubah_stok_front(game_list):
             search_arr = ubah_stok(game_list, id_game, amount)
             arr = None
 
-            if search_arr[1] == 0:
-                arr = search_arr[0]
-                print('Stok game', id, 'gagal dikurangi karena stok kurang. Stok sekarang:', search_arr[1])
-            elif search_arr[1] == -1:
-                arr = search_arr[0]
-                print('Stok game', id, 'berhasil dikurangi. Stok sekarang:', search_arr[1])
-            elif search_arr[1] == 1:
-                arr = search_arr[0]
-                print('Stok game', id, 'berhasil ditambahkan. Stok sekarang:', search_arr[1])
+            if search_arr:
+                if search_arr[1] == 0:
+                    arr = search_arr[0]
+                    print('Stok game', id_game, 'gagal dikurangi karena stok kurang. Stok sekarang:', search_arr[2])
+                elif search_arr[1] == -1:
+                    arr = search_arr[0]
+                    print('Stok game', id_game, 'berhasil dikurangi. Stok sekarang:', search_arr[2])
+                elif search_arr[1] == 1:
+                    arr = search_arr[0]
+                    print('Stok game', id_game, 'berhasil ditambahkan. Stok sekarang:', search_arr[2])
+
             
             return arr
 
@@ -239,23 +247,17 @@ def ubah_game_front(game_list):
             harga = None if harga.strip() == '' else harga
 
             try:
+                if tahun_rilis is not None:
+                    tahun_rilis = int(tahun_rilis)
 
-                tahun_rilis = int(tahun_rilis)
-                harga = float(harga)
-
-            except ValueError:
-                if tahun_rilis is not None and harga is not None:
-                    correct = False
-
-            except TypeError:
-
-                try:
+                if harga is not None:
                     harga = float(harga)
 
-                except TypeError:
-                    pass
+            except ValueError:
+                correct = False
 
-                except ValueError:
+            if correct:
+                if (tahun_rilis is not None and int(tahun_rilis) < 0) or (harga is not None and float(harga) < 0) :
                     correct = False
 
             if correct:
@@ -266,7 +268,7 @@ def ubah_game_front(game_list):
             else:
                 print('Masukan tidak valid.')
 
-                pass
+                return []
 
         else:
 
@@ -309,6 +311,7 @@ def exit_front(user_arr, game_arr, riwayat_arr, kepemilikan_full):
 
     if ans =='y':
         save_front(user_arr, game_arr, riwayat_arr, kepemilikan_full)
+        sys.exit()
 
     else:
         exit()

@@ -24,7 +24,9 @@ def verify_kepemilikan(array, user_id):
 
 
 def search_game(game_list, array):
-    return game_list[search_game_by_id(game_list, array[0])]
+    list = game_list[search_game_by_id(game_list, array[0])]
+    list_final = [list[0], list[1], list[2], list[3], list[4]]
+    return list_final
 
 
 def save_kepemilikan(arr, folder_name, url_file):

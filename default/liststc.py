@@ -63,22 +63,71 @@ def convert_arr_to_type(el_arr, type_arr):
 
 def print_format(list_arr):
     arr = list_arr
-    diff = []
+    maxnama = 0
+    maxharga = 0
+    maxkateg = 0
+    maxtahun = 0
     if not arr:
         return []
 
+    if length(arr) == 1:
+        print(str(1) + '. ', end='')
+        arr = arr[0]
+        for k in range(length(arr)):
+            if k == 1:
+                text = "{isi:<{diff}s}".format(isi=str(arr[k]), diff=str(maxnama))
+                print(text, end=' | ')
+            elif k == 2:
+                text = "{isi:<{diff}s}".format(isi=str(arr[k]), diff=str(maxharga))
+                print(text, end=' | ')
+            elif k == 3:
+                text = "{isi:<{diff}s}".format(isi=str(arr[k]), diff=str(maxkateg))
+                print(text, end=' | ')
+            elif k == 4:
+                text = "{isi:<{diff}s}".format(isi=str(arr[k]), diff=str(maxtahun))
+                print(text, end=' | ')
+            else:
+                text = "{isi:<{diff}s}".format(isi=str(arr[k]), diff='0')
+                print(text, end=' | ')
+        print('')
+        return []
+
     else:
-        for a in range(1, length(arr)):
-            b = 0
-            for b in range(length(arr[b])):
-                if diff[a] < length(arr[b][a]):
-                    diff[a] = length(arr[b][a])
+
+        for a in range(length(arr)):
+            if maxnama < length(str(arr[a][1])):
+                maxnama = length(str(arr[a][1]))
+
+            if maxharga < length(str(arr[a][2])):
+                maxharga = length(str(arr[a][2]))
+
+            if maxkateg < length(str(arr[a][3])):
+                maxkateg = length(str(arr[a][3]))
+
+            if maxtahun < length(str(arr[a][4])):
+                maxtahun = length(str(arr[a][4]))
+
         for i in range(length(arr)):
-            print(str(i+1) + '. ', end='')
+            print(str(i + 1) + '. ', end='')
             for j in range(length(arr[i])):
-                if j == length(arr[i])-1:
+                if j == length(arr[i]) - 1:
                     print(arr[i][j])
                 else:
-                    text = "{isi:<{diff}s}".format(isi=arr[i][j], diff=diff[j])
-                    print(text, end=' | ')
+                    if j == 1:
+                        text = "{isi:<{diff}s}".format(isi=str(arr[i][j]), diff=str(maxnama))
+                        print(text, end=' | ')
+                    elif j == 2:
+                        text = "{isi:<{diff}s}".format(isi=str(arr[i][j]), diff=str(maxharga))
+                        print(text, end=' | ')
+                    elif j == 3:
+                        text = "{isi:<{diff}s}".format(isi=str(arr[i][j]), diff=str(maxkateg))
+                        print(text, end=' | ')
+                    elif j == 4:
+                        text = "{isi:<{diff}s}".format(isi=str(arr[i][j]), diff=str(maxtahun))
+                        print(text, end=' | ')
+                    else:
+                        text = "{isi:<{diff}s}".format(isi=str(arr[i][j]), diff='0')
+                        print(text, end=' | ')
+
+        print('')
         return []

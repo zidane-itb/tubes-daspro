@@ -37,22 +37,28 @@ def search_game_by_id_tahun(game_list, game_id=None, tahun=None):
     elif game_id is not None:
 
         # menggunakan fungsi search_game_by_id untuk mencari index
-        arr = game_list[search_game_by_id(game_list, game_id)]
+        index = -1
+        for i in range(length(game_list)):
+            if game_list[i][0] == game_id:
+                index = i
 
-        # mencocokkan data game berdasarkan game_id dengan data tahun (jika diberikan)
-        if tahun is not None:
-            if arr[3] == tahun:
+        if index != -1:
 
-                # return jika sesuai
-                return [arr]
+            arr = game_list[search_game_by_id(game_list, game_id)]
+            # mencocokkan data game berdasarkan game_id dengan data tahun (jika diberikan)
+            if tahun is not None:
+                if arr[3] == tahun:
 
-            else:
+                    # return jika sesuai
+                    return [arr]
 
-                # return array kosong jika tidak sesuai
-                return []
+                else:
 
-        # return array jika field tahun tidak diisi
-        return [arr]
+                    # return array kosong jika tidak sesuai
+                    return []
+
+            # return array jika field tahun tidak diisi
+            return [arr]
 
     else:
         arr = []
@@ -77,22 +83,27 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
         kategori_fulfill = True
         tahun_fulfill = True
 
-        # array game dengan game_id sesuai parameter fungsi
-        arr = game_list[search_game_by_id(game_list, game_id)]
+        index = search_game_by_id(game_list, game_id)
 
-        # cek apakah semua field input user yang ada sesuai dengan data berdasarkan game_id
-        if nama_game is not None and nama_game != arr[1]:
-            nama_fulfill = False
-        if harga is not None and harga != arr[4]:
-            harga_fulfill = False
-        if kategori is not None and kategori != arr[2]:
-            kategori_fulfill = False
-        if tahun_rilis is not None and tahun_rilis != arr[3]:
-            tahun_fulfill = False
+        if index != -1 :
+            # array game dengan game_id sesuai parameter fungsi
+            arr = game_list[search_game_by_id(game_list, game_id)]
 
-        # return array jika semua field sesuai
-        if id_fulfill and nama_fulfill and harga_fulfill and kategori_fulfill and tahun_fulfill:
-            return [arr]
+            # cek apakah semua field input user yang ada sesuai dengan data berdasarkan game_id
+            if nama_game is not None and nama_game != arr[1]:
+                nama_fulfill = False
+            if harga is not None and harga != arr[4]:
+                harga_fulfill = False
+            if kategori is not None and kategori != arr[2]:
+                kategori_fulfill = False
+            if tahun_rilis is not None and tahun_rilis != arr[3]:
+                tahun_fulfill = False
+
+            # return array jika semua field sesuai
+            if id_fulfill and nama_fulfill and harga_fulfill and kategori_fulfill and tahun_fulfill:
+                return [arr]
+            else:
+                return []
         else:
             return []
 
@@ -136,29 +147,38 @@ def add_game(game_list, nama_game, kategori, tahun_rilis, harga, stok_awal):
 
 def ubah_stok(game_list, game_id, amount):
     amount = int(amount)
-    
-    for i in range(length(game_list)):
 
-        if game_list[i][0] == game_id and amount >= 0:
-            game_list[i][5] += amount
-            arr = game_list
-            return arr, 1
+    index = search_game_by_id(game_list, game_id)
 
-        elif game_list[i][0] == game_id and amount < 0:
-            if game_list[i][5] + amount > 0:
+    if index != -1:
+        for i in range(length(game_list)):
+
+            if game_list[i][0] == game_id and amount >= 0:
                 game_list[i][5] += amount
                 arr = game_list
-                return arr, -1
+                return arr, 1, game_list[i][5]
+
+            elif game_list[i][0] == game_id and amount < 0:
+                if game_list[i][5] + amount > 0:
+                    game_list[i][5] += amount
+                    arr = game_list
+                    return arr, -1, game_list[i][5]
+
+                else:
+                    arr = game_list
+                    return arr, 0, game_list[i][5]
 
             else:
-                arr = game_list
-                return arr, 0
+                return []
 
-        else:
-            return []
+    else:
+        print('ID Game tidak ditemukan.')
+        return []
 
 
 def list_game_toko(game_list, sort_scheme=None):
+    sort_scheme = None if sort_scheme.strip() == '' else sort_scheme
+
     if sort_scheme is not None:
         if sort_scheme == "tahun-" or sort_scheme == "tahun+":
             if sort_scheme == "tahun-":
@@ -245,7 +265,7 @@ def cek_saldo_cukup(data_saldo_user, user_id, harga):
 
 
 def buy_game(game_list, game_user, kepemilikan_full, riwayat_game, user_id, user_list):
-    index_user = user_list[int(user_id)-1]
+    index_user = user_list[int(user_id) - 1]
     user_id = index_user[0]
 
     gameID = input("Masukkan ID Game: ")
@@ -255,7 +275,7 @@ def buy_game(game_list, game_user, kepemilikan_full, riwayat_game, user_id, user
         print("ID Game Salah")
 
     else:
-        saldoCukup = cek_saldo_cukup(user_list, user_id, gameInfo[4]) # gameInfo indeks ke-4 adalah harga
+        saldoCukup = cek_saldo_cukup(user_list, user_id, gameInfo[4])  # gameInfo indeks ke-4 adalah harga
         if cek_user_have_bought(game_user, gameID):
             print("Anda sudah memiliki Game tersebut!")
 
@@ -291,7 +311,8 @@ def create_game_id(id_number):
 
 
 def load_game(folder_name, url_file):
-    return read(folder_name=folder_name, file_name=__file_name, type_arr=[None, None, None, int, float, int], url_file=url_file)
+    return read(folder_name=folder_name, file_name=__file_name, type_arr=[None, None, None, int, float, int],
+                url_file=url_file)
 
 
 def save_game(game_list, folder_name, url_file):

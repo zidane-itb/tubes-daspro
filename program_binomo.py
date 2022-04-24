@@ -8,7 +8,8 @@ from data.riwayataggr import load_riwayat
 from front.interaction import register_front, login_front, search_my_game_front, \
     search_game_at_store_front, ubah_stok_front, list_game_toko_front, tambah_game_front, ubah_game_front, help_front, \
     save_front, exit_front
-from file.magicconchshell import kerangajaib
+from bonus.magicconchshell import kerangajaib
+from bonus.tictactoe import tictactoe
 from default.liststc import print_format
 
 
@@ -44,12 +45,13 @@ def login(user_arr):
 
 if __name__ == '__main__':
     folder_name, arg_obj = get_args()
-    folder_name = folder_name[0]
 
     if not folder_name:
         print('Tidak ada nama folder yang diberikan!')
         arg_obj.print_usage()
         sys.exit()
+    else:
+        folder_name = folder_name[0]
 
     print('loading...')
 
@@ -121,9 +123,9 @@ if __name__ == '__main__':
             if logged_in_arr[4] == '0':
 
                 search_arr = ubah_stok_front(game_arr)
-                game_arr = search_arr
 
-                print(search_arr)
+                if search_arr:
+                    game_arr = search_arr
 
             else:
 
@@ -153,7 +155,7 @@ if __name__ == '__main__':
                     user_arr = tup[4]
 
                 else:
-                    print('Anda tidak memiliki game tersebut.')
+
                     pass
 
             else:
@@ -182,12 +184,12 @@ if __name__ == '__main__':
                 search_arr = search_my_game_front(kepemilikan_arr)
 
                 if not search_arr:
-                    print('Daftar game pada inventory yang memenuhi kriteria:')
+
                     print('Tidak ada game pada inventory-mu yang memenuhi kriteria.')
 
                 else:
                     print('Daftar game pada inventory yang memenuhi kriteria:')
-                    print(search_arr)
+
                     print_format(search_arr)
             else:
 
@@ -205,8 +207,6 @@ if __name__ == '__main__':
             else:
                 print('Daftar game pada toko yang memenuhi kriteria:')
                 print_format(search_arr)
-
-
 
         # F12
         elif menu.strip() == 'topup':
@@ -226,7 +226,7 @@ if __name__ == '__main__':
         elif menu.strip() == 'riwayat':
         
             if logged_in_arr[4] == '1':
-                print(kepemilikan_arr)
+                print_format(kepemilikan_arr)
 
             else:
 
@@ -247,3 +247,7 @@ if __name__ == '__main__':
         #B02
         elif menu.strip() == 'kerangajaib':
             kerangajaib()
+
+        #B03
+        elif menu.strip() == 'tictactoe':
+            tictactoe()
