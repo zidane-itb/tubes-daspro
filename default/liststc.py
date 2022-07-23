@@ -42,6 +42,7 @@ def splitter_to_array(string, delimiter):
     return arr
 
 
+# pengganti x in arr
 def el_in_array(el, arr):
     for i in arr:
         if i == el:
@@ -50,6 +51,10 @@ def el_in_array(el, arr):
     return False
 
 
+# mengubah tipe data elemen array sesuai dengan isi type_arr.
+# type_arr hanya berisi tipe data (tidak boleh hal lain)
+# dianggap pengguna fungsi ini mengerti tentang kegunaan fungsi ini (karena fungsi ini tidak berinteraksi
+# secara langsung dengan user program "binomo")
 def convert_arr_to_type(el_arr, type_arr):
     num = length(el_arr)
 
@@ -61,6 +66,7 @@ def convert_arr_to_type(el_arr, type_arr):
     return el_arr
 
 
+# string formatting untuk array game
 def print_format(list_arr):
     arr = list_arr
     maxnama = 0

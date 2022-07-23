@@ -1,3 +1,5 @@
+from default.liststc import length
+
 __k = 3
 
 
@@ -30,10 +32,11 @@ def __get_ciphered_char(p: str):
         return p
 
 
+# loop through string menggunakan fungsi get_ciphered_char
 def cipher_string(text: str):
     final_text = ""
 
-    for i in text:
-        final_text += __get_ciphered_char(i)
+    for i in range(length(text)):
+        final_text += __get_ciphered_char(text[i])
 
     return final_text

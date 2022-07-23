@@ -26,17 +26,21 @@ def write(header, arr, folder_name, file_name, url_file=None):
     else:
         folder_found=True
 
+    # membuat folder baru jika tidak ada folder bername file_name
     if not folder_found:
         os.mkdir(path=folder_name)
         url = folder_name
 
+    # proses writing
     with open(os.path.join(url, file_name), 'w') as file:
 
+        # write csv header
         for i in range(length(header)):
             file.write(header[i] + delimiter)
 
         file.write('\n')
 
+        # write the data
         for i in range(0, length(arr)):
 
             for j in range(length(arr[i])):
@@ -44,6 +48,8 @@ def write(header, arr, folder_name, file_name, url_file=None):
 
             file.write('\n')
 
+    # untuk optimisasi, kita melakukan pencarian url hanya sekali untuk beberapa file dengan cara melempar
+    # url jika url awalnya tidak dimiliki (ditandai dengan variabel url_none)
     return url if url_none else None
 
 
@@ -71,6 +77,8 @@ def read(folder_name, file_name, type_arr=None, function_validator=None, functio
     url_none = True if not url_file else False
     folder_found = False
 
+    # proses pencarian file. proses ini bisa mencakup folder dimanapun jika masih merupakan child dari folder
+    # utama program
     if url is None:
         for (root, dirs, files) in os.walk('..', topdown=True):
             if el_in_array(folder_name, dirs):
@@ -95,8 +103,10 @@ def read(folder_name, file_name, type_arr=None, function_validator=None, functio
                 pass
 
             else:
+                # memecah string tiap line menjadi array berdasarkan delimiter
                 data = splitter_to_array(raw[i], delimiter)
 
+                # pemasukan data ke array. menggunakan parameter yang sudah dijelaskan di atas
                 if type_arr is not None:
                     data = convert_arr_to_type(data, type_arr)
 
@@ -118,6 +128,7 @@ def read(folder_name, file_name, type_arr=None, function_validator=None, functio
                             search = function_search(search_param, data)
                             data_arr = add_list(data_arr, search)
 
+    # untuk optimisasi, kita hanya akan melakukan pencarian url sekali, lalu melempar url yang sudah ditemukan
     if url_none:
         return data_arr, url
     else:

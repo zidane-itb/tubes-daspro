@@ -126,10 +126,22 @@ def search_full(game_list, game_id=None, nama_game=None, harga=None, kategori=No
             return arr
 
 
+# menambahkan game ke array
 def add_game(game_list, nama_game, kategori, tahun_rilis, harga, stok_awal):
+
+    # memastikan bahwa seluruh field input valid (tidak none)
     if not (game_list is None and nama_game is None and kategori is None and tahun_rilis is None
             and harga is None and stok_awal is None):
 
+        # validasi #2
+        try:
+            tahun_rilis = int(tahun_rilis)
+            harga = float(harga)
+            stok_awal = int(stok_awal)
+        except ValueError:
+            return []
+
+        # membuat game id secara otomatis
         id_num = convert_id(game_list[length(game_list) - 1][0]) + 1
 
         game_id = create_game_id(id_num)
@@ -186,14 +198,14 @@ def list_game_toko(game_list, sort_scheme=None):
                 for i in range(length(arr)):
                     for j in range(i + 1, length(arr)):
                         if arr[i][3] < arr[j][3]:
-                            arr[i][3], arr[j][3] = arr[j][3], arr[i][3]
+                            arr[i], arr[j] = arr[j], arr[i]
                 return arr
             else:
                 arr = game_list
                 for i in range(length(arr)):
                     for j in range(i + 1, length(arr)):
                         if arr[i][3] > arr[j][3]:
-                            arr[i][3], arr[j][3] = arr[j][3], arr[i][3]
+                            arr[i], arr[j] = arr[j], arr[i]
                 return arr
         elif sort_scheme == "harga-" or sort_scheme == "harga+":
             if sort_scheme == "harga-":
@@ -201,14 +213,14 @@ def list_game_toko(game_list, sort_scheme=None):
                 for i in range(length(arr)):
                     for j in range(i + 1, length(arr)):
                         if arr[i][4] < arr[j][4]:
-                            arr[i][4], arr[j][4] = arr[j][4], arr[i][4]
+                            arr[i], arr[j] = arr[j], arr[i]
                 return arr
             else:
                 arr = game_list
                 for i in range(length(arr)):
                     for j in range(i + 1, length(arr)):
                         if arr[i][4] > arr[j][4]:
-                            arr[i][4], arr[j][4] = arr[j][4], arr[i][4]
+                            arr[i], arr[j] = arr[j], arr[i]
                 return arr
         else:
             return []
@@ -216,11 +228,16 @@ def list_game_toko(game_list, sort_scheme=None):
         return game_list
 
 
+# mengubah data game
 def ubah_game(game_list, game_id, nama_game=None, kategori=None, tahun_rilis=None, harga=None):
+    # memastikan bahwa game_id ada
     if game_id is not None:
 
+        # mencari index game berdasarkan id
         index = search_game_by_id(game_list, game_id)
 
+        # karena tidak ada field wajib selain game_id, maka 4 if clauses dibawah ini
+        # berfungsi untuk mengubah masing2 field jika terdapat input
         if nama_game is not None:
             game_list[index][1] = nama_game
 
@@ -299,6 +316,7 @@ def buy_game(game_list, game_user, kepemilikan_full, riwayat_game, user_id, user
     return []
 
 
+# membuat game_id dengan format GAMEXXX
 def create_game_id(id_number):
     game_id = 'GAME'
 
@@ -310,11 +328,13 @@ def create_game_id(id_number):
     return game_id
 
 
+# load game dari storage ke memory
 def load_game(folder_name, url_file):
     return read(folder_name=folder_name, file_name=__file_name, type_arr=[None, None, None, int, float, int],
                 url_file=url_file)
 
 
+# save array game ke storage
 def save_game(game_list, folder_name, url_file):
     return write(__csv_header, game_list, folder_name, __file_name, url_file=url_file)
 

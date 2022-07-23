@@ -1,10 +1,15 @@
 from default.liststc import length
 
+# semua fungsi di file ini dibuat sebagai bentuk merapikan code dan mengikuti
+# prinsip reusability (mungkin juga disebut DRY principles)
 
+
+# program pembantu validasi tipe data
 def validate(dtype, obj):
     return True if type(obj) == dtype else False
 
 
+# memvalidasi username registrasi
 def validate_register(username):
     for i in range(length(username)):
 
@@ -27,6 +32,7 @@ def __validate_register_char(char):
         return True
 
 
+# memvalidasi game_id
 def validate_game_id(game_id):
     if not (game_id[0] == 'G' and game_id[1] == 'A' and game_id[2] == 'M' and game_id[3] == 'E'):
 

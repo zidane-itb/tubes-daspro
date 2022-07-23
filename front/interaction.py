@@ -8,6 +8,11 @@ from data.riwayataggr import save_riwayat
 from security.validator import validate_register, validate_game_id
 from sys import exit
 
+# seluruh code ini merupakan user input, output dan validasi. tidak perlu untuk dijelaskan
+# secara lebih lanjut karena cukup mudah untuk dimengerti.
+
+# digunakan file terpisah seperti ini untuk kerapian code
+
 
 def register_front(user_arr):
     nama_reg = input('Masukkan nama: ')
